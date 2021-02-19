@@ -22,15 +22,9 @@ struct Waveform: View {
     
     var body: some View {
         GeometryReader { geometry in
-            HStack(alignment: .center, spacing: 0) {
-                ForEach(0..<waveformData.count, id: \.self) { index in
-                    Rectangle()
-                        .frame(width: 1 / displayScale, height: CGFloat(waveformData[index].max) * frameSize.height, alignment: .center)
-                    
-                }
-                Spacer()
-            }
-            .preference(key: SizeKey.self, value: geometry.size)
+            WaveformShape(waveformData: $waveformData, displayScale: displayScale)
+                .stroke(style: StrokeStyle(lineWidth: 0.5))
+                .preference(key: SizeKey.self, value: geometry.size)
         }
         .onPreferenceChange(SizeKey.self) {
             guard frameSize != $0 else { return }
