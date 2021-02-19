@@ -28,6 +28,13 @@ struct Waveform: View {
             .onPreferenceChange(SizeKey.self) {
                 frameSize = $0
             }
+            HStack(spacing: 0) {
+                ForEach(0..<waveformData.count, id: \.self) { index in
+                    Rectangle()
+                        .frame(width: 1, height: CGFloat(waveformData[index].max) * frameSize.height, alignment: .center)
+                    
+                }
+            }
             Text("Loading waveform...")
         }
         .onChange(of: frameSize) {
