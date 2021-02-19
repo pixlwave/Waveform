@@ -39,7 +39,9 @@ struct Waveform: View {
         }
         .onChange(of: frameSize) {
             print("Frame size \($0)")
+            let start = Date()
             updateWaveformData(width: $0.width)
+            print("Render time \(Date().timeIntervalSince(start))")
         }
     }
     
@@ -54,7 +56,7 @@ struct Waveform: View {
         #warning("handle ints if necessary")
         guard let floatChannelData = buffer.floatChannelData else { return }
         
-        for point in 0..<Int(frameSize.width) {
+        DispatchQueue.concurrentPerform(iterations: Int(frameSize.width)) { point in
             var data: WaveformData = .zero
             for sample in 0..<samplesPerPoint {
                 for channel in 0..<channels {
