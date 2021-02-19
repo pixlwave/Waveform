@@ -15,6 +15,7 @@
 		A52C556D25E02CAF008822B1 /* Nihilore - The Other Side.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A52C556925E02CAF008822B1 /* Nihilore - The Other Side.mp3 */; };
 		A52C557025E02D95008822B1 /* AudioResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C556F25E02D95008822B1 /* AudioResources.swift */; };
 		A52C557525E02F12008822B1 /* WaveformData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C557425E02F12008822B1 /* WaveformData.swift */; };
+		A52C557825E03D2F008822B1 /* SizeKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C557725E03D2F008822B1 /* SizeKey.swift */; };
 		A5AD696625E025DA000B0627 /* WaveformDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AD696525E025DA000B0627 /* WaveformDemoApp.swift */; };
 		A5AD696825E025DA000B0627 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AD696725E025DA000B0627 /* ContentView.swift */; };
 		A5AD696A25E025DB000B0627 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5AD696925E025DB000B0627 /* Assets.xcassets */; };
@@ -31,6 +32,7 @@
 		A52C556925E02CAF008822B1 /* Nihilore - The Other Side.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Nihilore - The Other Side.mp3"; sourceTree = "<group>"; };
 		A52C556F25E02D95008822B1 /* AudioResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioResources.swift; sourceTree = "<group>"; };
 		A52C557425E02F12008822B1 /* WaveformData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformData.swift; sourceTree = "<group>"; };
+		A52C557725E03D2F008822B1 /* SizeKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeKey.swift; sourceTree = "<group>"; };
 		A5AD696225E025DA000B0627 /* WaveformDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaveformDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5AD696525E025DA000B0627 /* WaveformDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformDemoApp.swift; sourceTree = "<group>"; };
 		A5AD696725E025DA000B0627 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 			children = (
 				A5AD698225E02986000B0627 /* Waveform.swift */,
 				A52C557425E02F12008822B1 /* WaveformData.swift */,
+				A52C557725E03D2F008822B1 /* SizeKey.swift */,
 			);
 			path = Waveform;
 			sourceTree = "<group>";
@@ -226,6 +229,7 @@
 				A5AD698325E02986000B0627 /* Waveform.swift in Sources */,
 				A52C557025E02D95008822B1 /* AudioResources.swift in Sources */,
 				A52C557525E02F12008822B1 /* WaveformData.swift in Sources */,
+				A52C557825E03D2F008822B1 /* SizeKey.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

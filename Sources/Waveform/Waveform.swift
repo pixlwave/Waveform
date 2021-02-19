@@ -3,35 +3,60 @@ import AVFoundation
 
 struct Waveform: View {
     let audioFile: AVAudioFile
-    let waveformData: [WaveformData] = []
     
-    var body: some View {
-        Text("Hello, World!")
-            .onAppear {
-                updateWaveformData()
-            }
-    }
+    private let audioBuffer: AVAudioPCMBuffer?
+    @State private var waveformData: [WaveformData] = []
     
-    func updateWaveformData() {
-        guard
-            let buffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))
-        else { return }
+    @State private var frameSize: CGSize = .zero
+    
+    init(audioFile: AVAudioFile) {
+        self.audioFile = audioFile
+        self.audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))
         
         #warning("Handle errors")
-        try? audioFile.read(into: buffer)
+        guard let audioBuffer = audioBuffer else { return }
+        try? audioFile.read(into: audioBuffer)
         print("Read")
-        let channels = buffer.format.channelCount
-        let length = buffer.frameLength
+    }
+    
+    var body: some View {
+        ZStack {
+            GeometryReader { geometry in
+                Color.clear
+                    .preference(key: SizeKey.self, value: geometry.size)
+            }
+            .onPreferenceChange(SizeKey.self) {
+                frameSize = $0
+            }
+            Text("Loading waveform...")
+        }
+        .onChange(of: frameSize) {
+            print("Frame size \($0)")
+            updateWaveformData(width: $0.width)
+        }
+    }
+    
+    func updateWaveformData(width: CGFloat) {
+        waveformData = []
+        guard let buffer = audioBuffer else { return }
+        
+        let channels = Int(buffer.format.channelCount)
+        let length = Int(buffer.frameLength)
+        let samplesPerPoint = length / Int(width)
         
         #warning("handle ints if necessary")
         guard let floatChannelData = buffer.floatChannelData else { return }
-        for s in 0..<Int(length) {
-            var sample: Float = 0
-            for c in 0..<Int(channels) {
-                if floatChannelData[c][s].magnitude > sample.magnitude {
-                    sample = floatChannelData[c][s]
+        
+        for point in 0..<Int(frameSize.width) {
+            var data: WaveformData = .zero
+            for sample in 0..<samplesPerPoint {
+                for channel in 0..<channels {
+                    let value = floatChannelData[channel][(point * samplesPerPoint) + sample]
+                    data.min = min(value, data.min)
+                    data.max = max(value, data.max)
                 }
             }
+            waveformData.append(data)
         }
         print("Finished")
     }
