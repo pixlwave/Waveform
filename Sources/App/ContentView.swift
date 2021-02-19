@@ -2,8 +2,10 @@ import SwiftUI
 import AVFoundation
 
 struct ContentView: View {
+    let audioFile = try! AVAudioFile(forReading: AudioResources.horizon)
+    
     var body: some View {
-        Waveform()
+        Waveform(audioFile: audioFile)
             .padding()
     }
 }

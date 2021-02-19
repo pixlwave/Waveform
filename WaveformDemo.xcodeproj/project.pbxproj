@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A52C556325E02CA0008822B1 /* Horizon.aif in Resources */ = {isa = PBXBuildFile; fileRef = A52C556125E02CA0008822B1 /* Horizon.aif */; };
+		A52C556425E02CA0008822B1 /* Glitch Drum Loop.aif in Resources */ = {isa = PBXBuildFile; fileRef = A52C556225E02CA0008822B1 /* Glitch Drum Loop.aif */; };
+		A52C556A25E02CAF008822B1 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A52C556625E02CAE008822B1 /* LICENSE */; };
+		A52C556B25E02CAF008822B1 /* Nihilore - Aberration.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A52C556725E02CAE008822B1 /* Nihilore - Aberration.mp3 */; };
+		A52C556C25E02CAF008822B1 /* Nihilore - Motion Blur.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A52C556825E02CAE008822B1 /* Nihilore - Motion Blur.mp3 */; };
+		A52C556D25E02CAF008822B1 /* Nihilore - The Other Side.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A52C556925E02CAF008822B1 /* Nihilore - The Other Side.mp3 */; };
+		A52C557025E02D95008822B1 /* AudioResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C556F25E02D95008822B1 /* AudioResources.swift */; };
+		A52C557525E02F12008822B1 /* WaveformData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C557425E02F12008822B1 /* WaveformData.swift */; };
 		A5AD696625E025DA000B0627 /* WaveformDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AD696525E025DA000B0627 /* WaveformDemoApp.swift */; };
 		A5AD696825E025DA000B0627 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AD696725E025DA000B0627 /* ContentView.swift */; };
 		A5AD696A25E025DB000B0627 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5AD696925E025DB000B0627 /* Assets.xcassets */; };
@@ -15,6 +23,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A52C556125E02CA0008822B1 /* Horizon.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Horizon.aif; sourceTree = "<group>"; };
+		A52C556225E02CA0008822B1 /* Glitch Drum Loop.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Glitch Drum Loop.aif"; sourceTree = "<group>"; };
+		A52C556625E02CAE008822B1 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		A52C556725E02CAE008822B1 /* Nihilore - Aberration.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Nihilore - Aberration.mp3"; sourceTree = "<group>"; };
+		A52C556825E02CAE008822B1 /* Nihilore - Motion Blur.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Nihilore - Motion Blur.mp3"; sourceTree = "<group>"; };
+		A52C556925E02CAF008822B1 /* Nihilore - The Other Side.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Nihilore - The Other Side.mp3"; sourceTree = "<group>"; };
+		A52C556F25E02D95008822B1 /* AudioResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioResources.swift; sourceTree = "<group>"; };
+		A52C557425E02F12008822B1 /* WaveformData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformData.swift; sourceTree = "<group>"; };
 		A5AD696225E025DA000B0627 /* WaveformDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaveformDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5AD696525E025DA000B0627 /* WaveformDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformDemoApp.swift; sourceTree = "<group>"; };
 		A5AD696725E025DA000B0627 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -35,6 +51,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A52C555F25E02C7C008822B1 /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				A52C556625E02CAE008822B1 /* LICENSE */,
+				A52C556725E02CAE008822B1 /* Nihilore - Aberration.mp3 */,
+				A52C556825E02CAE008822B1 /* Nihilore - Motion Blur.mp3 */,
+				A52C556925E02CAF008822B1 /* Nihilore - The Other Side.mp3 */,
+			);
+			path = Music;
+			sourceTree = "<group>";
+		};
+		A52C556025E02C86008822B1 /* Clips */ = {
+			isa = PBXGroup;
+			children = (
+				A52C556225E02CA0008822B1 /* Glitch Drum Loop.aif */,
+				A52C556125E02CA0008822B1 /* Horizon.aif */,
+			);
+			path = Clips;
+			sourceTree = "<group>";
+		};
 		A5AD695925E025DA000B0627 = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +109,8 @@
 		A5AD697625E0260C000B0627 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A52C556025E02C86008822B1 /* Clips */,
+				A52C555F25E02C7C008822B1 /* Music */,
 				A5AD696925E025DB000B0627 /* Assets.xcassets */,
 				A5AD696E25E025DB000B0627 /* Info.plist */,
 				A5AD696B25E025DB000B0627 /* Preview Content */,
@@ -92,6 +130,7 @@
 			children = (
 				A5AD696525E025DA000B0627 /* WaveformDemoApp.swift */,
 				A5AD696725E025DA000B0627 /* ContentView.swift */,
+				A52C556F25E02D95008822B1 /* AudioResources.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -100,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				A5AD698225E02986000B0627 /* Waveform.swift */,
+				A52C557425E02F12008822B1 /* WaveformData.swift */,
 			);
 			path = Waveform;
 			sourceTree = "<group>";
@@ -164,7 +204,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5AD696D25E025DB000B0627 /* Preview Assets.xcassets in Resources */,
+				A52C556325E02CA0008822B1 /* Horizon.aif in Resources */,
+				A52C556D25E02CAF008822B1 /* Nihilore - The Other Side.mp3 in Resources */,
 				A5AD696A25E025DB000B0627 /* Assets.xcassets in Resources */,
+				A52C556C25E02CAF008822B1 /* Nihilore - Motion Blur.mp3 in Resources */,
+				A52C556425E02CA0008822B1 /* Glitch Drum Loop.aif in Resources */,
+				A52C556A25E02CAF008822B1 /* LICENSE in Resources */,
+				A52C556B25E02CAF008822B1 /* Nihilore - Aberration.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +224,8 @@
 				A5AD696825E025DA000B0627 /* ContentView.swift in Sources */,
 				A5AD696625E025DA000B0627 /* WaveformDemoApp.swift in Sources */,
 				A5AD698325E02986000B0627 /* Waveform.swift in Sources */,
+				A52C557025E02D95008822B1 /* AudioResources.swift in Sources */,
+				A52C557525E02F12008822B1 /* WaveformData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
