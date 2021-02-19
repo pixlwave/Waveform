@@ -8,6 +8,7 @@ struct Waveform: View {
     @State private var waveformData: [WaveformData] = []
     
     @State private var frameSize: CGSize = .zero
+    @Environment(\.displayScale) var displayScale
     
     init(audioFile: AVAudioFile) {
         self.audioFile = audioFile
@@ -31,7 +32,7 @@ struct Waveform: View {
             HStack(spacing: 0) {
                 ForEach(0..<waveformData.count, id: \.self) { index in
                     Rectangle()
-                        .frame(width: 1, height: CGFloat(waveformData[index].max) * frameSize.height, alignment: .center)
+                        .frame(width: 1 / displayScale, height: CGFloat(waveformData[index].max) * frameSize.height, alignment: .center)
                     
                 }
             }
@@ -51,12 +52,12 @@ struct Waveform: View {
         
         let channels = Int(buffer.format.channelCount)
         let length = Int(buffer.frameLength)
-        let samplesPerPoint = length / Int(width)
+        let samplesPerPoint = length / Int(width * displayScale)
         
         #warning("handle ints if necessary")
         guard let floatChannelData = buffer.floatChannelData else { return }
         
-        DispatchQueue.concurrentPerform(iterations: Int(frameSize.width)) { point in
+        DispatchQueue.concurrentPerform(iterations: Int(width * displayScale)) { point in
             var data: WaveformData = .zero
             for sample in 0..<samplesPerPoint {
                 for channel in 0..<channels {
