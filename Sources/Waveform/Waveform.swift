@@ -21,53 +21,50 @@ struct Waveform: View {
     }
     
     var body: some View {
-        ZStack {
-            GeometryReader { geometry in
-                Color.clear
-                    .preference(key: SizeKey.self, value: geometry.size)
-            }
-            .onPreferenceChange(SizeKey.self) {
-                frameSize = $0
-            }
-            HStack(spacing: 0) {
+        GeometryReader { geometry in
+            HStack(alignment: .center, spacing: 0) {
                 ForEach(0..<waveformData.count, id: \.self) { index in
                     Rectangle()
                         .frame(width: 1 / displayScale, height: CGFloat(waveformData[index].max) * frameSize.height, alignment: .center)
                     
                 }
+                Spacer()
             }
-            Text("Loading waveform...")
+            .preference(key: SizeKey.self, value: geometry.size)
+        }
+        .onPreferenceChange(SizeKey.self) {
+            guard frameSize != $0 else { return }
+            frameSize = $0
         }
         .onChange(of: frameSize) {
             print("Frame size \($0)")
-            let start = Date()
             updateWaveformData(width: $0.width)
-            print("Render time \(Date().timeIntervalSince(start))")
         }
     }
     
     func updateWaveformData(width: CGFloat) {
         waveformData = []
-        guard let buffer = audioBuffer else { return }
-        
-        let channels = Int(buffer.format.channelCount)
-        let length = Int(buffer.frameLength)
-        let samplesPerPoint = length / Int(width * displayScale)
-        
-        #warning("handle ints if necessary")
-        guard let floatChannelData = buffer.floatChannelData else { return }
-        
-        DispatchQueue.concurrentPerform(iterations: Int(width * displayScale)) { point in
-            var data: WaveformData = .zero
-            for sample in 0..<samplesPerPoint {
-                for channel in 0..<channels {
-                    let value = floatChannelData[channel][(point * samplesPerPoint) + sample]
-                    data.min = min(value, data.min)
-                    data.max = max(value, data.max)
+        DispatchQueue.global(qos: .userInteractive).async {
+            guard let buffer = audioBuffer else { return }
+            
+            let channels = Int(buffer.format.channelCount)
+            let length = Int(buffer.frameLength)
+            let samplesPerPoint = length / Int(width * displayScale)
+            
+            #warning("handle ints if necessary")
+            guard let floatChannelData = buffer.floatChannelData else { return }
+            
+            DispatchQueue.concurrentPerform(iterations: Int(width * displayScale)) { point in
+                var data: WaveformData = .zero
+                for sample in 0..<samplesPerPoint {
+                    for channel in 0..<channels {
+                        let value = floatChannelData[channel][(point * samplesPerPoint) + sample]
+                        data.min = min(value, data.min)
+                        data.max = max(value, data.max)
+                    }
                 }
+                DispatchQueue.main.async { waveformData.append(data) }
             }
-            waveformData.append(data)
         }
-        print("Finished")
     }
 }
