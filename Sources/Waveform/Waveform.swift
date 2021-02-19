@@ -22,8 +22,7 @@ struct Waveform: View {
     
     var body: some View {
         GeometryReader { geometry in
-            WaveformShape(waveformData: $waveformData, displayScale: displayScale)
-                .stroke(style: StrokeStyle(lineWidth: 0.5))
+            WaveformRenderer(waveformData: $waveformData, displayScale: displayScale)
                 .preference(key: SizeKey.self, value: geometry.size)
         }
         .onPreferenceChange(SizeKey.self) {
