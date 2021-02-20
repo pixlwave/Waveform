@@ -7,6 +7,7 @@ class WaveformAudio: ObservableObject {
     
     private var generateTask: GenerateWaveformTask?
     @Published private(set) var sampleData: [SampleData] = []
+    @Published var renderSamples: ClosedRange<Int>
     
     init?(audioFile: AVAudioFile) {
         let capacity = AVAudioFrameCount(audioFile.length)
@@ -21,9 +22,10 @@ class WaveformAudio: ObservableObject {
         
         self.audioFile = audioFile
         self.audioBuffer = audioBuffer
+        self.renderSamples = 0...Int(capacity)
     }
     
-    func refreshData(width: CGFloat, renderSamples: ClosedRange<Int>) {
+    func refreshData(width: CGFloat) {
         generateTask?.cancel()
         generateTask = GenerateWaveformTask(audioBuffer: audioBuffer)
         

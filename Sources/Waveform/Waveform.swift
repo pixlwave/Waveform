@@ -5,9 +5,6 @@ import Accelerate
 struct Waveform: View {
     @ObservedObject var audio: WaveformAudio
     
-//    @Binding var startSample: Int
-    @Binding var renderSamples: ClosedRange<Int>
-    
     @State private var frameSize: CGSize = .zero
     
     var body: some View {
@@ -23,12 +20,12 @@ struct Waveform: View {
             print("Frame size \($0)")
             refreshData()
         }
-        .onChange(of: renderSamples) { _ in
+        .onChange(of: audio.renderSamples) { _ in
             refreshData()
         }
     }
     
     func refreshData() {
-        audio.refreshData(width: frameSize.width, renderSamples: renderSamples)
+        audio.refreshData(width: frameSize.width)
     }
 }
