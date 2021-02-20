@@ -2,10 +2,10 @@ import AVFoundation
 import Accelerate
 
 class WaveformGenerator {
-    let audioBuffer: AVAudioPCMBuffer?
+    let audioBuffer: AVAudioPCMBuffer
     private var isCancelled = false
     
-    init(audioBuffer: AVAudioPCMBuffer?) {
+    init(audioBuffer: AVAudioPCMBuffer) {
         self.audioBuffer = audioBuffer
     }
     
@@ -15,13 +15,11 @@ class WaveformGenerator {
     
     func generateWaveformData(width: CGFloat, completion: @escaping (Int, WaveformData) -> Void) {
         DispatchQueue.global(qos: .userInteractive).async {
-            guard let buffer = self.audioBuffer else { return }
-            
-            let channels = Int(buffer.format.channelCount)
-            let length = Int(buffer.frameLength)
+            let channels = Int(self.audioBuffer.format.channelCount)
+            let length = Int(self.audioBuffer.frameLength)
             let samplesPerPoint = length / Int(width)
             
-            guard let floatChannelData = buffer.floatChannelData else { return }
+            guard let floatChannelData = self.audioBuffer.floatChannelData else { return }
             
             DispatchQueue.concurrentPerform(iterations: Int(width)) { point in
                 // don't begin work if the generator has been cancelled
@@ -30,7 +28,7 @@ class WaveformGenerator {
                 var data: WaveformData = .zero
                 for channel in 0..<channels {
                     let pointer = floatChannelData[channel].advanced(by: point * samplesPerPoint)
-                    let stride = vDSP_Stride(buffer.stride)
+                    let stride = vDSP_Stride(self.audioBuffer.stride)
                     let length = vDSP_Length(samplesPerPoint)
                     
                     var value: Float = 0

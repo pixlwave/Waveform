@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct WaveformRenderer: Shape {
-    @Binding var waveformData: [WaveformData]
+    let waveformData: [WaveformData]
+    let zoom: CGFloat
     
     func path(in rect: CGRect) -> Path {
         Path { path in
