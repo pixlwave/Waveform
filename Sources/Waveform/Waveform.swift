@@ -11,12 +11,10 @@ struct Waveform: View {
     
     @State private var frameSize: CGSize = .zero
     
-    @State private var zoomSamples: ClosedRange<AVAudioFramePosition> = 0...1
+    @Binding var startSample: Int
+    @Binding var endSample: Int
     
-    @State private var currentZoom: CGFloat = 1
-    @State private var gestureZoom: CGFloat = 1
-    
-    init?(audioFile: AVAudioFile) {
+    init?(audioFile: AVAudioFile, startSample: Binding<Int>, endSample: Binding<Int>) {
         let capacity = AVAudioFrameCount(audioFile.length)
         guard let audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: capacity) else { return nil }
         
@@ -29,14 +27,14 @@ struct Waveform: View {
         self.audioFile = audioFile
         self.audioBuffer = audioBuffer
         
-        zoomSamples = 0...AVAudioFramePosition(audioBuffer.frameLength)
+        _startSample = startSample
+        _endSample = endSample
     }
     
     var body: some View {
         GeometryReader { geometry in
-            WaveformRenderer(waveformData: waveformData, zoom: currentZoom)
+            WaveformRenderer(waveformData: waveformData)
                 .preference(key: SizeKey.self, value: geometry.size)
-                .scaleEffect(x: gestureZoom, y: 1, anchor: .center)
         }
         .onPreferenceChange(SizeKey.self) {
             guard frameSize != $0 else { return }
@@ -44,40 +42,22 @@ struct Waveform: View {
         }
         .onChange(of: frameSize) {
             print("Frame size \($0)")
-            generateWaveformData(width: $0.width)
+            generateWaveformData()
         }
-        .gesture(magnification)
+        .onChange(of: startSample) { _ in
+            generateWaveformData()
+        }
+        .onChange(of: endSample) { _ in
+            generateWaveformData()
+        }
     }
     
-    var magnification: some Gesture {
-        MagnificationGesture()
-            .onChanged { amount in
-                gestureZoom = amount
-            }
-            .onEnded { finalAmount in
-                currentZoom *= finalAmount
-                gestureZoom = 1
-            }
-    }
-    
-    func position(of sample: AVAudioFramePosition) -> CGFloat? {
-        let ratio = frameSize.width / CGFloat(zoomSamples.count)
-        let position = CGFloat(sample - zoomSamples.lowerBound) * ratio
-        return (0...frameSize.width).contains(position) ? position : nil
-    }
-    
-    func sample(for position: CGFloat) -> AVAudioFramePosition {
-        let ratio = CGFloat(zoomSamples.count) / frameSize.width
-        let sample = zoomSamples.lowerBound + AVAudioFramePosition(position * ratio)
-        return min(max(0, sample), AVAudioFramePosition(audioBuffer.frameLength))
-    }
-    
-    func generateWaveformData(width: CGFloat) {
+    func generateWaveformData() {
         generator?.cancel()
         generator = WaveformGenerator(audioBuffer: audioBuffer)
         
-        waveformData = [WaveformData](repeating: .zero, count: Int(width))
-        generator?.generateWaveformData(width: width) { index, data in
+        waveformData = [WaveformData](repeating: .zero, count: Int(frameSize.width))
+        generator?.generateWaveformData(width: frameSize.width, startSample: startSample, endSample: endSample) { index, data in
             self.waveformData[index] = data
         }
     }

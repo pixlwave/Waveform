@@ -13,10 +13,10 @@ class WaveformGenerator {
         isCancelled = true
     }
     
-    func generateWaveformData(width: CGFloat, completion: @escaping (Int, WaveformData) -> Void) {
+    func generateWaveformData(width: CGFloat, startSample: Int, endSample: Int, completion: @escaping (Int, WaveformData) -> Void) {
         DispatchQueue.global(qos: .userInteractive).async {
             let channels = Int(self.audioBuffer.format.channelCount)
-            let length = Int(self.audioBuffer.frameLength)
+            let length = endSample - startSample
             let samplesPerPoint = length / Int(width)
             
             guard let floatChannelData = self.audioBuffer.floatChannelData else { return }
@@ -27,7 +27,7 @@ class WaveformGenerator {
                 
                 var data: WaveformData = .zero
                 for channel in 0..<channels {
-                    let pointer = floatChannelData[channel].advanced(by: point * samplesPerPoint)
+                    let pointer = floatChannelData[channel].advanced(by: startSample + (point * samplesPerPoint))
                     let stride = vDSP_Stride(self.audioBuffer.stride)
                     let length = vDSP_Length(samplesPerPoint)
                     
