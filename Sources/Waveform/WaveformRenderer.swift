@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct WaveformRenderer: Shape {
-    let waveformData: [WaveformData]
+    let waveformData: [SampleData]
     
     func path(in rect: CGRect) -> Path {
         Path { path in

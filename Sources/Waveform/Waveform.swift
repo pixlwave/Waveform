@@ -9,7 +9,7 @@ struct Waveform: View {
     @Binding var endSample: Int
     
     @State private var generateTask: GenerateWaveformTask?
-    @State private var waveformData: [WaveformData] = []
+    @State private var waveformData: [SampleData] = []
     
     @State private var frameSize: CGSize = .zero
     
@@ -38,8 +38,8 @@ struct Waveform: View {
         generateTask?.cancel()
         generateTask = GenerateWaveformTask(audioBuffer: audio.audioBuffer)
         
-        waveformData = [WaveformData](repeating: .zero, count: Int(frameSize.width))
-        generateTask?.generateWaveformData(width: frameSize.width, startSample: startSample, endSample: endSample) { index, data in
+        waveformData = [SampleData](repeating: .zero, count: Int(frameSize.width))
+        generateTask?.resume(width: frameSize.width, startSample: startSample, endSample: endSample) { index, data in
             self.waveformData[index] = data
         }
     }

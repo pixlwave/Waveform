@@ -13,7 +13,7 @@ class GenerateWaveformTask {
         isCancelled = true
     }
     
-    func generateWaveformData(width: CGFloat, startSample: Int, endSample: Int, completion: @escaping (Int, WaveformData) -> Void) {
+    func resume(width: CGFloat, startSample: Int, endSample: Int, completion: @escaping (Int, SampleData) -> Void) {
         DispatchQueue.global(qos: .userInteractive).async {
             let channels = Int(self.audioBuffer.format.channelCount)
             let length = endSample - startSample
@@ -25,7 +25,7 @@ class GenerateWaveformTask {
                 // don't begin work if the generator has been cancelled
                 guard !self.isCancelled else { return }
                 
-                var data: WaveformData = .zero
+                var data: SampleData = .zero
                 for channel in 0..<channels {
                     let pointer = floatChannelData[channel].advanced(by: startSample + (point * samplesPerPoint))
                     let stride = vDSP_Stride(self.audioBuffer.stride)
