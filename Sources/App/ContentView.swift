@@ -13,6 +13,11 @@ struct ContentView: View {
                 .environmentObject(audio)
                 .background(Color(red: 0.9, green: 0.9, blue: 0.9))
                 .cornerRadius(15)
+            
+            Text("Debug:")
+                .font(.headline)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top)
             Slider(value: $start, in: 0...1)
             Slider(value: $end, in: 0...1)
         }
