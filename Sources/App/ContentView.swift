@@ -7,6 +7,8 @@ struct ContentView: View {
     @State var start: Double = 0
     @State var end: Double = 1
     
+    @State var isShowingDebug = true
+    
     var body: some View {
         VStack {
             Waveform(audio: audio)
@@ -14,12 +16,23 @@ struct ContentView: View {
                 .background(Color(red: 0.9, green: 0.9, blue: 0.9))
                 .cornerRadius(15)
             
-            Text("Debug:")
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top)
-            Slider(value: $start, in: 0...1)
-            Slider(value: $end, in: 0...1)
+            HStack {
+                Text("Debug:")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top)
+                Spacer()
+                Button { withAnimation { isShowingDebug.toggle() } } label: {
+                    Image(systemName: isShowingDebug ? "chevron.down.circle" : "chevron.up.circle" )
+                }
+            }
+            if isShowingDebug {
+                VStack {
+                    Slider(value: $start, in: 0...1)
+                    Slider(value: $end, in: 0...1)
+                }
+                .transition(.offset(x: 0, y: 100))
+            }
         }
         .padding()
         .onChange(of: start) {
