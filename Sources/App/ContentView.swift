@@ -6,6 +6,8 @@ struct ContentView: View {
     
     var body: some View {
         Waveform(audioFile: audioFile)
+            .background(Color(red: 0.9, green: 0.9, blue: 0.9))
+            .cornerRadius(15)
             .padding()
     }
 }

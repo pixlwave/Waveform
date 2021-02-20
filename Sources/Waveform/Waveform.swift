@@ -11,6 +11,9 @@ struct Waveform: View {
     
     @State private var frameSize: CGSize = .zero
     
+    @State private var currentZoom: CGFloat = 1
+    @State private var gestureZoom: CGFloat = 1
+    
     init(audioFile: AVAudioFile) {
         self.audioFile = audioFile
         self.audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))
@@ -24,6 +27,7 @@ struct Waveform: View {
         GeometryReader { geometry in
             WaveformRenderer(waveformData: $waveformData)
                 .preference(key: SizeKey.self, value: geometry.size)
+                .scaleEffect(x: currentZoom * gestureZoom, y: 1, anchor: .center)
         }
         .onPreferenceChange(SizeKey.self) {
             guard frameSize != $0 else { return }
@@ -33,6 +37,18 @@ struct Waveform: View {
             print("Frame size \($0)")
             generateWaveformData(width: $0.width)
         }
+        .gesture(magnification)
+    }
+    
+    var magnification: some Gesture {
+        MagnificationGesture()
+            .onChanged { amount in
+                gestureZoom = amount
+            }
+            .onEnded { finalAmount in
+                currentZoom *= finalAmount
+                gestureZoom = 1
+            }
     }
     
     func generateWaveformData(width: CGFloat) {
