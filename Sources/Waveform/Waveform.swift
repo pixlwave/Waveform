@@ -30,11 +30,11 @@ struct Waveform: View {
         }
         .onChange(of: frameSize) {
             print("Frame size \($0)")
-            updateWaveformData(width: $0.width)
+            generateWaveformData(width: $0.width)
         }
     }
     
-    func updateWaveformData(width: CGFloat) {
+    func generateWaveformData(width: CGFloat) {
         waveformData = []
         DispatchQueue.global(qos: .userInteractive).async {
             guard let buffer = audioBuffer else { return }
