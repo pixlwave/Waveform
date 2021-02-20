@@ -32,9 +32,6 @@ struct ContentView: View {
             let endSample = sample > audio.renderSamples.lowerBound ? sample : audio.renderSamples.lowerBound + 1
             audio.renderSamples = audio.renderSamples.lowerBound...endSample
         }
-        .onAppear {
-            audio.renderSamples = 0...Int(audio.audioFile.length)
-        }
     }
 }
 

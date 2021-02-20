@@ -7,14 +7,12 @@ struct Waveform: View {
     
     @State private var frameSize: CGSize = .zero
     @State private var zoomGestureValue: CGFloat = 1
-    @State private var panGestureValue: DragGesture.Value?
+    @State private var panGestureValue: CGFloat = 0
     
     var body: some View {
         GeometryReader { geometry in
             WaveformRenderer(waveformData: audio.sampleData)
                 .preference(key: SizeKey.self, value: geometry.size)
-                .scaleEffect(x: zoomGestureValue)
-                .transformEffect(CGAffineTransform(translationX: panGestureValue?.translation.width ?? 0, y: 0))
         }
         .gesture(magnification)
         .simultaneousGesture(drag)
@@ -34,11 +32,13 @@ struct Waveform: View {
     var magnification: some Gesture {
         MagnificationGesture()
             .onChanged {
+                let zoomAmount = $0 / zoomGestureValue
+                zoom(amount: zoomAmount)
                 zoomGestureValue = $0
             }
             .onEnded {
-                zoomGestureValue = $0
-                commitZoom()
+                let zoomAmount = $0 / zoomGestureValue
+                zoom(amount: zoomAmount)
                 zoomGestureValue = 1
             }
     }
@@ -46,28 +46,29 @@ struct Waveform: View {
     var drag: some Gesture {
         DragGesture()
             .onChanged {
-                panGestureValue = $0
+                let panAmount = $0.translation.width - panGestureValue
+                pan(amount: panAmount)
+                panGestureValue = $0.translation.width
             }
             .onEnded {
-                panGestureValue = $0
-                commitPan()
-                panGestureValue = nil
+                let panAmount = $0.translation.width - panGestureValue
+                pan(amount: panAmount)
+                panGestureValue = 0
             }
     }
     
-    func commitZoom() {
+    func zoom(amount: CGFloat) {
         let count = audio.renderSamples.count
-        let newCount = CGFloat(count) / zoomGestureValue
+        let newCount = CGFloat(count) / amount
         let delta = (count - Int(newCount)) / 2
         let renderStartSample = audio.renderSamples.lowerBound + delta
         let renderEndSample = audio.renderSamples.upperBound - delta
         audio.renderSamples = renderStartSample...renderEndSample
     }
     
-    func commitPan() {
-        guard let deltaX = panGestureValue?.translation.width else { return }
+    func pan(amount: CGFloat) {
         let samplesPerPoint = audio.renderSamples.count / Int(frameSize.width)
-        let delta = samplesPerPoint * Int(deltaX)
+        let delta = samplesPerPoint * Int(amount)
         let renderStartSample = audio.renderSamples.lowerBound - delta
         let renderEndSample = audio.renderSamples.upperBound - delta
         audio.renderSamples = renderStartSample...renderEndSample
