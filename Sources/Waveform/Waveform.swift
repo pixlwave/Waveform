@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import Accelerate
 
 struct Waveform: View {
     let audioFile: AVAudioFile
@@ -13,7 +14,6 @@ struct Waveform: View {
         self.audioFile = audioFile
         self.audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))
         
-        #warning("Handle errors")
         guard let audioBuffer = audioBuffer else { return }
         try? audioFile.read(into: audioBuffer)
         print("Read")
@@ -43,18 +43,25 @@ struct Waveform: View {
             let length = Int(buffer.frameLength)
             let samplesPerPoint = length / Int(width)
             
-            #warning("handle ints if necessary")
             guard let floatChannelData = buffer.floatChannelData else { return }
             
             DispatchQueue.concurrentPerform(iterations: Int(width)) { point in
                 var data: WaveformData = .zero
-                for sample in 0..<samplesPerPoint {
                     for channel in 0..<channels {
-                        let value = floatChannelData[channel][(point * samplesPerPoint) + sample]
+                        let pointer = floatChannelData[channel].advanced(by: point * samplesPerPoint)
+                        let stride = vDSP_Stride(buffer.stride)
+                        let length = vDSP_Length(samplesPerPoint)
+                        
+                        var value: Float = 0
+                        
+                        // calculate minimum value for point
+                        vDSP_minv(pointer, stride, &value, length)
                         data.min = min(value, data.min)
+                        
+                        // calculate maximum value for point
+                        vDSP_maxv(pointer, stride, &value, length)
                         data.max = max(value, data.max)
                     }
-                }
                 DispatchQueue.main.async { waveformData.append(data) }
             }
         }
