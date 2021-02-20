@@ -1,7 +1,7 @@
 import AVFoundation
 import Accelerate
 
-class WaveformGenerator {
+class GenerateWaveformTask {
     let audioBuffer: AVAudioPCMBuffer
     private var isCancelled = false
     

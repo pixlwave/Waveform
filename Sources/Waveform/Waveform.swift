@@ -3,33 +3,14 @@ import AVFoundation
 import Accelerate
 
 struct Waveform: View {
-    let audioFile: AVAudioFile
-    
-    private let audioBuffer: AVAudioPCMBuffer
-    @State private var generator: WaveformGenerator?
+    @EnvironmentObject var model: WaveformAudio
+    @State private var generateTask: GenerateWaveformTask?
     @State private var waveformData: [WaveformData] = []
     
     @State private var frameSize: CGSize = .zero
     
     @Binding var startSample: Int
     @Binding var endSample: Int
-    
-    init?(audioFile: AVAudioFile, startSample: Binding<Int>, endSample: Binding<Int>) {
-        let capacity = AVAudioFrameCount(audioFile.length)
-        guard let audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: capacity) else { return nil }
-        
-        do {
-            try audioFile.read(into: audioBuffer)
-        } catch {
-            return nil
-        }
-        
-        self.audioFile = audioFile
-        self.audioBuffer = audioBuffer
-        
-        _startSample = startSample
-        _endSample = endSample
-    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -53,11 +34,11 @@ struct Waveform: View {
     }
     
     func generateWaveformData() {
-        generator?.cancel()
-        generator = WaveformGenerator(audioBuffer: audioBuffer)
+        generateTask?.cancel()
+        generateTask = GenerateWaveformTask(audioBuffer: model.audioBuffer)
         
         waveformData = [WaveformData](repeating: .zero, count: Int(frameSize.width))
-        generator?.generateWaveformData(width: frameSize.width, startSample: startSample, endSample: endSample) { index, data in
+        generateTask?.generateWaveformData(width: frameSize.width, startSample: startSample, endSample: endSample) { index, data in
             self.waveformData[index] = data
         }
     }

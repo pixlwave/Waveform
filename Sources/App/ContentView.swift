@@ -2,7 +2,7 @@ import SwiftUI
 import AVFoundation
 
 struct ContentView: View {
-    let audioFile = try! AVAudioFile(forReading: AudioResources.aberration)
+    @StateObject var audio = WaveformAudio(audioFile: try! AVAudioFile(forReading: AudioResources.aberration))!
     
     @State var startSample: Int = 0
     @State var endSample: Int = 0
@@ -12,21 +12,25 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Waveform(audioFile: audioFile, startSample: $startSample, endSample: $endSample)
+            Waveform(startSample: $startSample, endSample: $endSample)
+                .environmentObject(audio)
                 .background(Color(red: 0.9, green: 0.9, blue: 0.9))
                 .cornerRadius(15)
-            Slider(value: $start, in: 0...1) { isEditing in
-                guard !isEditing else { return }
-                let sample = Int(start * Double(audioFile.length))
-                startSample = sample < endSample ? sample : endSample - 1
-            }
-            Slider(value: $end, in: 0...1) { isEditing in
-                guard !isEditing else { return }
-                let sample = Int(end * Double(audioFile.length))
-                endSample = sample > startSample ? sample : startSample + 1
-            }
+            Slider(value: $start, in: 0...1)
+            Slider(value: $end, in: 0...1)
         }
         .padding()
+        .onChange(of: start) {
+            let sample = Int($0 * Double(audio.audioFile.length))
+            startSample = sample < endSample ? sample : endSample - 1
+        }
+        .onChange(of: end) {
+            let sample = Int($0 * Double(audio.audioFile.length))
+            endSample = sample > startSample ? sample : startSample + 1
+        }
+        .onAppear {
+            endSample = Int(audio.audioFile.length)
+        }
     }
 }
 
