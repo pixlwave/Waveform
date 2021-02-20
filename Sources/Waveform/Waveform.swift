@@ -6,6 +6,7 @@ struct Waveform: View {
     let audioFile: AVAudioFile
     
     private let audioBuffer: AVAudioPCMBuffer?
+    @State private var generator: WaveformGenerator?
     @State private var waveformData: [WaveformData] = []
     
     @State private var frameSize: CGSize = .zero
@@ -35,36 +36,12 @@ struct Waveform: View {
     }
     
     func generateWaveformData(width: CGFloat) {
+        generator?.cancel()
+        generator = WaveformGenerator(audioBuffer: audioBuffer)
+        
         waveformData = [WaveformData](repeating: .zero, count: Int(width))
-        DispatchQueue.global(qos: .userInteractive).async {
-            guard let buffer = audioBuffer else { return }
-            
-            let channels = Int(buffer.format.channelCount)
-            let length = Int(buffer.frameLength)
-            let samplesPerPoint = length / Int(width)
-            
-            guard let floatChannelData = buffer.floatChannelData else { return }
-            
-            DispatchQueue.concurrentPerform(iterations: Int(width)) { point in
-                var data: WaveformData = .zero
-                for channel in 0..<channels {
-                    let pointer = floatChannelData[channel].advanced(by: point * samplesPerPoint)
-                    let stride = vDSP_Stride(buffer.stride)
-                    let length = vDSP_Length(samplesPerPoint)
-                    
-                    var value: Float = 0
-                    
-                    // calculate minimum value for point
-                    vDSP_minv(pointer, stride, &value, length)
-                    data.min = min(value, data.min)
-                    
-                    // calculate maximum value for point
-                    vDSP_maxv(pointer, stride, &value, length)
-                    data.max = max(value, data.max)
-                }
-                
-                DispatchQueue.main.async { waveformData[point] = data }
-            }
+        generator?.generateWaveformData(width: width) { index, data in
+            self.waveformData[index] = data
         }
     }
 }
