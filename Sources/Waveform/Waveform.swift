@@ -3,19 +3,16 @@ import AVFoundation
 import Accelerate
 
 struct Waveform: View {
-    let audio: WaveformAudio
+    @ObservedObject var audio: WaveformAudio
     
     @Binding var startSample: Int
     @Binding var endSample: Int
-    
-    @State private var generateTask: GenerateWaveformTask?
-    @State private var waveformData: [SampleData] = []
     
     @State private var frameSize: CGSize = .zero
     
     var body: some View {
         GeometryReader { geometry in
-            WaveformRenderer(waveformData: waveformData)
+            WaveformRenderer(waveformData: audio.sampleData)
                 .preference(key: SizeKey.self, value: geometry.size)
         }
         .onPreferenceChange(SizeKey.self) {
@@ -24,23 +21,17 @@ struct Waveform: View {
         }
         .onChange(of: frameSize) {
             print("Frame size \($0)")
-            generateWaveformData()
+            refreshData()
         }
         .onChange(of: startSample) { _ in
-            generateWaveformData()
+            refreshData()
         }
         .onChange(of: endSample) { _ in
-            generateWaveformData()
+            refreshData()
         }
     }
     
-    func generateWaveformData() {
-        generateTask?.cancel()
-        generateTask = GenerateWaveformTask(audioBuffer: audio.audioBuffer)
-        
-        waveformData = [SampleData](repeating: .zero, count: Int(frameSize.width))
-        generateTask?.resume(width: frameSize.width, startSample: startSample, endSample: endSample) { index, data in
-            self.waveformData[index] = data
-        }
+    func refreshData() {
+        audio.refreshData(width: frameSize.width, startSample: startSample, endSample: endSample)
     }
 }
