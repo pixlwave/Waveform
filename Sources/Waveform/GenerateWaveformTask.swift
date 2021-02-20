@@ -13,7 +13,9 @@ class GenerateWaveformTask {
         isCancelled = true
     }
     
-    func resume(width: CGFloat, renderSamples: ClosedRange<Int>, completion: @escaping (Int, SampleData) -> Void) {
+    func resume(width: CGFloat, renderSamples: ClosedRange<Int>, completion: @escaping ([SampleData]) -> Void) {
+        var sampleData = [SampleData](repeating: .zero, count: Int(width))
+        
         DispatchQueue.global(qos: .userInteractive).async {
             let channels = Int(self.audioBuffer.format.channelCount)
             let length = renderSamples.count
@@ -22,7 +24,7 @@ class GenerateWaveformTask {
             guard let floatChannelData = self.audioBuffer.floatChannelData else { return }
             
             DispatchQueue.concurrentPerform(iterations: Int(width)) { point in
-                // don't begin work if the generator has been cancelled
+                // don't begin work if the task has been cancelled
                 guard !self.isCancelled else { return }
                 
                 var data: SampleData = .zero
@@ -42,11 +44,14 @@ class GenerateWaveformTask {
                     data.max = max(value, data.max)
                 }
                 
-                DispatchQueue.main.async {
-                    // don't submit completed work if the generator has been cancelled
-                    guard !self.isCancelled else { return }
-                    completion(point, data)
-                }
+                // sync to hold completion handler until all iterations are complete
+                DispatchQueue.main.sync { sampleData[point] = data }
+                
+            }
+            DispatchQueue.main.async {
+                // don't call completion if the task has been cancelled
+                guard !self.isCancelled else { return }
+                completion(sampleData)
             }
         }
     }

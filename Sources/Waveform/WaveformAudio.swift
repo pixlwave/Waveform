@@ -29,9 +29,8 @@ class WaveformAudio: ObservableObject {
         generateTask?.cancel()
         generateTask = GenerateWaveformTask(audioBuffer: audioBuffer)
         
-        sampleData = [SampleData](repeating: .zero, count: Int(width))
-        generateTask?.resume(width: width, renderSamples: renderSamples) { index, data in
-            self.sampleData[index] = data
+        generateTask?.resume(width: width, renderSamples: renderSamples) { sampleData in
+            self.sampleData = sampleData
         }
     }
 }
