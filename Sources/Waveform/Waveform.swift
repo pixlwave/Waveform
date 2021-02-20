@@ -61,16 +61,23 @@ struct Waveform: View {
         let count = audio.renderSamples.count
         let newCount = CGFloat(count) / amount
         let delta = (count - Int(newCount)) / 2
-        let renderStartSample = audio.renderSamples.lowerBound + delta
-        let renderEndSample = audio.renderSamples.upperBound - delta
+        let renderStartSample = max(0, audio.renderSamples.lowerBound + delta)
+        let renderEndSample = min(audio.renderSamples.upperBound - delta, Int(audio.audioBuffer.frameLength))
         audio.renderSamples = renderStartSample...renderEndSample
     }
     
     func pan(amount: CGFloat) {
         let samplesPerPoint = audio.renderSamples.count / Int(frameSize.width)
         let delta = samplesPerPoint * Int(amount)
-        let renderStartSample = audio.renderSamples.lowerBound - delta
-        let renderEndSample = audio.renderSamples.upperBound - delta
+        var renderStartSample = audio.renderSamples.lowerBound - delta
+        var renderEndSample = audio.renderSamples.upperBound - delta
+        if renderStartSample < 0 {
+            renderStartSample = 0
+            renderEndSample = audio.renderSamples.count
+        } else if renderEndSample > Int(audio.audioBuffer.frameLength) {
+            renderEndSample = Int(audio.audioBuffer.frameLength)
+            renderStartSample = renderEndSample - audio.renderSamples.count
+        }
         audio.renderSamples = renderStartSample...renderEndSample
     }
     
