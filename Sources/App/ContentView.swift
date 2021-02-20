@@ -4,15 +4,14 @@ import AVFoundation
 struct ContentView: View {
     @StateObject var audio = WaveformAudio(audioFile: try! AVAudioFile(forReading: AudioResources.aberration))!
     
-    @State var startSample: Int = 0
-    @State var endSample: Int = 0
+    @State var renderSamples = 0...0
     
     @State var start: Double = 0
     @State var end: Double = 1
     
     var body: some View {
         VStack {
-            Waveform(audio: audio, startSample: $startSample, endSample: $endSample)
+            Waveform(audio: audio, renderSamples: $renderSamples)
                 .environmentObject(audio)
                 .background(Color(red: 0.9, green: 0.9, blue: 0.9))
                 .cornerRadius(15)
@@ -22,14 +21,16 @@ struct ContentView: View {
         .padding()
         .onChange(of: start) {
             let sample = Int($0 * Double(audio.audioFile.length))
-            startSample = sample < endSample ? sample : endSample - 1
+            let startSample = sample < renderSamples.upperBound ? sample : renderSamples.upperBound - 1
+            renderSamples = startSample...renderSamples.upperBound
         }
         .onChange(of: end) {
             let sample = Int($0 * Double(audio.audioFile.length))
-            endSample = sample > startSample ? sample : startSample + 1
+            let endSample = sample > renderSamples.lowerBound ? sample : renderSamples.lowerBound + 1
+            renderSamples = renderSamples.lowerBound...endSample
         }
         .onAppear {
-            endSample = Int(audio.audioFile.length)
+            renderSamples = 0...Int(audio.audioFile.length)
         }
     }
 }

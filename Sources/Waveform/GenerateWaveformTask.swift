@@ -13,10 +13,10 @@ class GenerateWaveformTask {
         isCancelled = true
     }
     
-    func resume(width: CGFloat, startSample: Int, endSample: Int, completion: @escaping (Int, SampleData) -> Void) {
+    func resume(width: CGFloat, renderSamples: ClosedRange<Int>, completion: @escaping (Int, SampleData) -> Void) {
         DispatchQueue.global(qos: .userInteractive).async {
             let channels = Int(self.audioBuffer.format.channelCount)
-            let length = endSample - startSample
+            let length = renderSamples.count
             let samplesPerPoint = length / Int(width)
             
             guard let floatChannelData = self.audioBuffer.floatChannelData else { return }
@@ -27,7 +27,7 @@ class GenerateWaveformTask {
                 
                 var data: SampleData = .zero
                 for channel in 0..<channels {
-                    let pointer = floatChannelData[channel].advanced(by: startSample + (point * samplesPerPoint))
+                    let pointer = floatChannelData[channel].advanced(by: renderSamples.lowerBound + (point * samplesPerPoint))
                     let stride = vDSP_Stride(self.audioBuffer.stride)
                     let length = vDSP_Length(samplesPerPoint)
                     

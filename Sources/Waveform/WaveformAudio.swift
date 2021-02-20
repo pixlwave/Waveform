@@ -23,12 +23,12 @@ class WaveformAudio: ObservableObject {
         self.audioBuffer = audioBuffer
     }
     
-    func refreshData(width: CGFloat, startSample: Int, endSample: Int) {
+    func refreshData(width: CGFloat, renderSamples: ClosedRange<Int>) {
         generateTask?.cancel()
         generateTask = GenerateWaveformTask(audioBuffer: audioBuffer)
         
         sampleData = [SampleData](repeating: .zero, count: Int(width))
-        generateTask?.resume(width: width, startSample: startSample, endSample: endSample) { index, data in
+        generateTask?.resume(width: width, renderSamples: renderSamples) { index, data in
             self.sampleData[index] = data
         }
     }
