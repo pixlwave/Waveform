@@ -12,7 +12,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Waveform(startSample: $startSample, endSample: $endSample)
+            Waveform(audio: audio, startSample: $startSample, endSample: $endSample)
                 .environmentObject(audio)
                 .background(Color(red: 0.9, green: 0.9, blue: 0.9))
                 .cornerRadius(15)

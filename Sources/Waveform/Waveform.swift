@@ -3,14 +3,15 @@ import AVFoundation
 import Accelerate
 
 struct Waveform: View {
-    @EnvironmentObject var model: WaveformAudio
+    let audio: WaveformAudio
+    
+    @Binding var startSample: Int
+    @Binding var endSample: Int
+    
     @State private var generateTask: GenerateWaveformTask?
     @State private var waveformData: [WaveformData] = []
     
     @State private var frameSize: CGSize = .zero
-    
-    @Binding var startSample: Int
-    @Binding var endSample: Int
     
     var body: some View {
         GeometryReader { geometry in
@@ -35,7 +36,7 @@ struct Waveform: View {
     
     func generateWaveformData() {
         generateTask?.cancel()
-        generateTask = GenerateWaveformTask(audioBuffer: model.audioBuffer)
+        generateTask = GenerateWaveformTask(audioBuffer: audio.audioBuffer)
         
         waveformData = [WaveformData](repeating: .zero, count: Int(frameSize.width))
         generateTask?.generateWaveformData(width: frameSize.width, startSample: startSample, endSample: endSample) { index, data in
