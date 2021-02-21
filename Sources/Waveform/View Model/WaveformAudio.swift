@@ -1,13 +1,13 @@
 import AVFoundation
 import SwiftUI
 
-class WaveformAudio: ObservableObject {
-    let audioFile: AVAudioFile
-    let audioBuffer: AVAudioPCMBuffer
+public class WaveformAudio: ObservableObject {
+    public let audioFile: AVAudioFile
+    public let audioBuffer: AVAudioPCMBuffer
     
     private var generateTask: GenerateTask?
     @Published private(set) var sampleData: [SampleData] = []
-    @Published var renderSamples: SampleRange {
+    @Published public var renderSamples: SampleRange {
         didSet { refreshData() }
     }
     
@@ -15,7 +15,7 @@ class WaveformAudio: ObservableObject {
         didSet { refreshData() }
     }
     
-    init?(audioFile: AVAudioFile) {
+    public init?(audioFile: AVAudioFile) {
         let capacity = AVAudioFrameCount(audioFile.length)
         guard let audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: capacity) else { return nil }
         

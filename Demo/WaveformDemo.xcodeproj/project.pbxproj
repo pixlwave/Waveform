@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A51CBD4125E2EE6B004D7255 /* Waveform in Frameworks */ = {isa = PBXBuildFile; productRef = A51CBD4025E2EE6B004D7255 /* Waveform */; };
 		A52C556325E02CA0008822B1 /* Horizon.aif in Resources */ = {isa = PBXBuildFile; fileRef = A52C556125E02CA0008822B1 /* Horizon.aif */; };
 		A52C556425E02CA0008822B1 /* Glitch Drum Loop.aif in Resources */ = {isa = PBXBuildFile; fileRef = A52C556225E02CA0008822B1 /* Glitch Drum Loop.aif */; };
 		A52C556A25E02CAF008822B1 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A52C556625E02CAE008822B1 /* LICENSE */; };
@@ -14,21 +15,14 @@
 		A52C556C25E02CAF008822B1 /* Nihilore - Motion Blur.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A52C556825E02CAE008822B1 /* Nihilore - Motion Blur.mp3 */; };
 		A52C556D25E02CAF008822B1 /* Nihilore - The Other Side.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A52C556925E02CAF008822B1 /* Nihilore - The Other Side.mp3 */; };
 		A52C557025E02D95008822B1 /* AudioResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C556F25E02D95008822B1 /* AudioResources.swift */; };
-		A52C557525E02F12008822B1 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C557425E02F12008822B1 /* SampleData.swift */; };
-		A52C557825E03D2F008822B1 /* SizeKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C557725E03D2F008822B1 /* SizeKey.swift */; };
-		A52C558225E068E0008822B1 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C558125E068E0008822B1 /* Renderer.swift */; };
-		A54B5A9925E2641800B3AFF5 /* Highlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54B5A9825E2641800B3AFF5 /* Highlight.swift */; };
-		A56FACBE25E2926700BA6322 /* Handle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56FACBD25E2926700BA6322 /* Handle.swift */; };
-		A597F64A25E1740D00AAB332 /* WaveformAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = A597F64925E1740D00AAB332 /* WaveformAudio.swift */; };
 		A5AD696625E025DA000B0627 /* WaveformDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AD696525E025DA000B0627 /* WaveformDemoApp.swift */; };
 		A5AD696825E025DA000B0627 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AD696725E025DA000B0627 /* ContentView.swift */; };
 		A5AD696A25E025DB000B0627 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5AD696925E025DB000B0627 /* Assets.xcassets */; };
 		A5AD696D25E025DB000B0627 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5AD696C25E025DB000B0627 /* Preview Assets.xcassets */; };
-		A5AD698325E02986000B0627 /* Waveform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AD698225E02986000B0627 /* Waveform.swift */; };
-		A5C7DB9D25E130EB007AFF32 /* GenerateTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C7DB9C25E130EB007AFF32 /* GenerateTask.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A51CBD3E25E2EE53004D7255 /* Waveform */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Waveform; path = ..; sourceTree = "<group>"; };
 		A52C556125E02CA0008822B1 /* Horizon.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Horizon.aif; sourceTree = "<group>"; };
 		A52C556225E02CA0008822B1 /* Glitch Drum Loop.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Glitch Drum Loop.aif"; sourceTree = "<group>"; };
 		A52C556625E02CAE008822B1 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -36,12 +30,6 @@
 		A52C556825E02CAE008822B1 /* Nihilore - Motion Blur.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Nihilore - Motion Blur.mp3"; sourceTree = "<group>"; };
 		A52C556925E02CAF008822B1 /* Nihilore - The Other Side.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Nihilore - The Other Side.mp3"; sourceTree = "<group>"; };
 		A52C556F25E02D95008822B1 /* AudioResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioResources.swift; sourceTree = "<group>"; };
-		A52C557425E02F12008822B1 /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
-		A52C557725E03D2F008822B1 /* SizeKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeKey.swift; sourceTree = "<group>"; };
-		A52C558125E068E0008822B1 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
-		A54B5A9825E2641800B3AFF5 /* Highlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Highlight.swift; sourceTree = "<group>"; };
-		A56FACBD25E2926700BA6322 /* Handle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handle.swift; sourceTree = "<group>"; };
-		A597F64925E1740D00AAB332 /* WaveformAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformAudio.swift; sourceTree = "<group>"; };
 		A597F64F25E1796D00AAB332 /* WaveformDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WaveformDemo.entitlements; sourceTree = "<group>"; };
 		A5AD696225E025DA000B0627 /* WaveformDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaveformDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5AD696525E025DA000B0627 /* WaveformDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformDemoApp.swift; sourceTree = "<group>"; };
@@ -49,8 +37,6 @@
 		A5AD696925E025DB000B0627 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A5AD696C25E025DB000B0627 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A5AD696E25E025DB000B0627 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A5AD698225E02986000B0627 /* Waveform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Waveform.swift; sourceTree = "<group>"; };
-		A5C7DB9C25E130EB007AFF32 /* GenerateTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateTask.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A51CBD4125E2EE6B004D7255 /* Waveform in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,40 +71,12 @@
 			path = Clips;
 			sourceTree = "<group>";
 		};
-		A54B5A9525E263B700B3AFF5 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				A5AD698225E02986000B0627 /* Waveform.swift */,
-				A52C558125E068E0008822B1 /* Renderer.swift */,
-				A54B5A9825E2641800B3AFF5 /* Highlight.swift */,
-				A56FACBD25E2926700BA6322 /* Handle.swift */,
-				A52C557725E03D2F008822B1 /* SizeKey.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		A54B5A9625E263CA00B3AFF5 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				A5C7DB9C25E130EB007AFF32 /* GenerateTask.swift */,
-				A52C557425E02F12008822B1 /* SampleData.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		A54B5A9725E263F200B3AFF5 /* View Model */ = {
-			isa = PBXGroup;
-			children = (
-				A597F64925E1740D00AAB332 /* WaveformAudio.swift */,
-			);
-			path = "View Model";
-			sourceTree = "<group>";
-		};
 		A5AD695925E025DA000B0627 = {
 			isa = PBXGroup;
 			children = (
 				A5AD696425E025DA000B0627 /* Sources */,
 				A5AD697625E0260C000B0627 /* Resources */,
+				A51CBD3E25E2EE53004D7255 /* Waveform */,
 				A5AD697B25E0272F000B0627 /* Frameworks */,
 				A5AD696325E025DA000B0627 /* Products */,
 			);
@@ -135,7 +94,6 @@
 			isa = PBXGroup;
 			children = (
 				A5AD698025E0295F000B0627 /* App */,
-				A5AD698125E0296D000B0627 /* Waveform */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -178,16 +136,6 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		A5AD698125E0296D000B0627 /* Waveform */ = {
-			isa = PBXGroup;
-			children = (
-				A54B5A9525E263B700B3AFF5 /* Views */,
-				A54B5A9725E263F200B3AFF5 /* View Model */,
-				A54B5A9625E263CA00B3AFF5 /* Models */,
-			);
-			path = Waveform;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -205,6 +153,7 @@
 			);
 			name = WaveformDemo;
 			packageProductDependencies = (
+				A51CBD4025E2EE6B004D7255 /* Waveform */,
 			);
 			productName = WaveformDemo;
 			productReference = A5AD696225E025DA000B0627 /* WaveformDemo.app */;
@@ -265,17 +214,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A597F64A25E1740D00AAB332 /* WaveformAudio.swift in Sources */,
-				A5C7DB9D25E130EB007AFF32 /* GenerateTask.swift in Sources */,
 				A5AD696825E025DA000B0627 /* ContentView.swift in Sources */,
-				A56FACBE25E2926700BA6322 /* Handle.swift in Sources */,
 				A5AD696625E025DA000B0627 /* WaveformDemoApp.swift in Sources */,
-				A52C558225E068E0008822B1 /* Renderer.swift in Sources */,
-				A5AD698325E02986000B0627 /* Waveform.swift in Sources */,
-				A54B5A9925E2641800B3AFF5 /* Highlight.swift in Sources */,
 				A52C557025E02D95008822B1 /* AudioResources.swift in Sources */,
-				A52C557525E02F12008822B1 /* SampleData.swift in Sources */,
-				A52C557825E03D2F008822B1 /* SizeKey.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +409,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A51CBD4025E2EE6B004D7255 /* Waveform */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Waveform;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A5AD695A25E025DA000B0627 /* Project object */;
 }

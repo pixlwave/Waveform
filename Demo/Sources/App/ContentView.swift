@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import Waveform
 
 struct ContentView: View {
     @StateObject var audio = WaveformAudio(audioFile: try! AVAudioFile(forReading: AudioResources.aberration))!

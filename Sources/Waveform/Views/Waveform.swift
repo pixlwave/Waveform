@@ -2,9 +2,9 @@ import SwiftUI
 import AVFoundation
 import Accelerate
 
-typealias SampleRange = Range<Int>
+public typealias SampleRange = Range<Int>
 
-struct Waveform: View {
+public struct Waveform: View {
     @ObservedObject var audio: WaveformAudio
     
     @State private var zoomGestureValue: CGFloat = 1
@@ -14,12 +14,12 @@ struct Waveform: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    init(audio: WaveformAudio, selectedSamples: Binding<SampleRange>) {
+    public init(audio: WaveformAudio, selectedSamples: Binding<SampleRange>) {
         self.audio = audio
         self._selectedSamples = selectedSamples
     }
     
-    var body: some View {
+    public var body: some View {
         GeometryReader { geometry in
             ZStack {
                 // invisible rectangle needed to register gestures that aren't on top of the waveform
