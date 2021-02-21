@@ -2,7 +2,7 @@ import AVFoundation
 import SwiftUI
 
 /// An object that generates waveform data from an `AVAudioFile`.
-public class WaveformAudio: ObservableObject {
+public class WaveformGenerator: ObservableObject {
     /// The audio file initially used to create the generator.
     public let audioFile: AVAudioFile
     /// An audio buffer containing the original audio file decoded as PCM data.

@@ -7,7 +7,7 @@ public typealias SampleRange = Range<Int>
 
 /// An interactive waveform generated from an `AVAudioFile`.
 public struct Waveform: View {
-    @ObservedObject var audio: WaveformAudio
+    @ObservedObject var generator: WaveformGenerator
     
     @State private var zoomGestureValue: CGFloat = 1
     @State private var panGestureValue: CGFloat = 0
@@ -15,10 +15,10 @@ public struct Waveform: View {
     
     /// Creates an instance powered by the supplied generator.
     /// - Parameters:
-    ///   - audio: The object that will supply waveform data.
+    ///   - generator: The object that will supply waveform data.
     ///   - selectedSamples: A binding to a `SampleRange` to update with the selection chosen in the waveform.
-    public init(audio: WaveformAudio, selectedSamples: Binding<SampleRange>) {
-        self.audio = audio
+    public init(generator: WaveformGenerator, selectedSamples: Binding<SampleRange>) {
+        self.generator = generator
         self._selectedSamples = selectedSamples
     }
     
@@ -29,7 +29,7 @@ public struct Waveform: View {
                 Rectangle()
                     .foregroundColor(Color(.systemBackground).opacity(0.01))
                 
-                Renderer(waveformData: audio.sampleData)
+                Renderer(waveformData: generator.sampleData)
                     .preference(key: SizeKey.self, value: geometry.size)
                 Highlight(selectedSamples: selectedSamples)
                     .foregroundColor(.accentColor)
@@ -43,10 +43,10 @@ public struct Waveform: View {
                 .foregroundColor(.accentColor)
         }
         .gesture(SimultaneousGesture(zoom, pan))
-        .environmentObject(audio)
+        .environmentObject(generator)
         .onPreferenceChange(SizeKey.self) {
-            guard audio.width != $0.width else { return }
-            audio.width = $0.width
+            guard generator.width != $0.width else { return }
+            generator.width = $0.width
         }
     }
     
@@ -79,27 +79,27 @@ public struct Waveform: View {
     }
     
     func zoom(amount: CGFloat) {
-        let count = audio.renderSamples.count
+        let count = generator.renderSamples.count
         let newCount = CGFloat(count) / amount
         let delta = (count - Int(newCount)) / 2
-        let renderStartSample = max(0, audio.renderSamples.lowerBound + delta)
-        let renderEndSample = min(audio.renderSamples.upperBound - delta, Int(audio.audioBuffer.frameLength))
-        audio.renderSamples = renderStartSample..<renderEndSample
+        let renderStartSample = max(0, generator.renderSamples.lowerBound + delta)
+        let renderEndSample = min(generator.renderSamples.upperBound - delta, Int(generator.audioBuffer.frameLength))
+        generator.renderSamples = renderStartSample..<renderEndSample
     }
     
     func pan(offset: CGFloat) {
-        let count = audio.renderSamples.count
-        var startSample = audio.sample(audio.renderSamples.lowerBound, with: offset)
+        let count = generator.renderSamples.count
+        var startSample = generator.sample(generator.renderSamples.lowerBound, with: offset)
         var endSample = startSample + count
         
         if startSample < 0 {
             startSample = 0
-            endSample = audio.renderSamples.count
-        } else if endSample > Int(audio.audioBuffer.frameLength) {
-            endSample = Int(audio.audioBuffer.frameLength)
-            startSample = endSample - audio.renderSamples.count
+            endSample = generator.renderSamples.count
+        } else if endSample > Int(generator.audioBuffer.frameLength) {
+            endSample = Int(generator.audioBuffer.frameLength)
+            startSample = endSample - generator.renderSamples.count
         }
         
-        audio.renderSamples = startSample..<endSample
+        generator.renderSamples = startSample..<endSample
     }
 }

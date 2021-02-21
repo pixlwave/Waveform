@@ -4,7 +4,7 @@ struct StartHandle: View {
     let radius: CGFloat = 12
     @Binding var selectedSamples: SampleRange
     
-    @EnvironmentObject var audio: WaveformAudio
+    @EnvironmentObject var generator: WaveformGenerator
     
     var body: some View {
         VStack(spacing: 0) {
@@ -14,7 +14,7 @@ struct StartHandle: View {
                 .frame(width: 2 * radius, height: 2 * radius, alignment: .center)
                 .gesture(drag)
         }
-        .offset(x: audio.position(of: selectedSamples.lowerBound) - radius)
+        .offset(x: generator.position(of: selectedSamples.lowerBound) - radius)
     }
     
     var drag: some Gesture {
@@ -28,7 +28,7 @@ struct StartHandle: View {
     }
     
     func updateSelection(_ offset: CGFloat) {
-        let sample = audio.sample(selectedSamples.lowerBound, with: offset)
+        let sample = generator.sample(selectedSamples.lowerBound, with: offset)
         guard sample < selectedSamples.upperBound else { return }
         selectedSamples = sample..<selectedSamples.upperBound
     }
@@ -39,7 +39,7 @@ struct EndHandle: View {
     let radius: CGFloat = 12
     @Binding var selectedSamples: SampleRange
     
-    @EnvironmentObject var audio: WaveformAudio
+    @EnvironmentObject var generator: WaveformGenerator
     
     var body: some View {
         VStack(spacing: 0) {
@@ -49,7 +49,7 @@ struct EndHandle: View {
                 .frame(width: 2 * radius, height: 2 * radius, alignment: .center)
                 .gesture(drag)
         }
-        .offset(x: audio.position(of: selectedSamples.upperBound) - radius)
+        .offset(x: generator.position(of: selectedSamples.upperBound) - radius)
     }
     
     var drag: some Gesture {
@@ -63,7 +63,7 @@ struct EndHandle: View {
     }
     
     func updateSelection(_ offset: CGFloat) {
-        let sample = audio.sample(selectedSamples.upperBound, with: offset)
+        let sample = generator.sample(selectedSamples.upperBound, with: offset)
         guard sample > selectedSamples.lowerBound else { return }
         selectedSamples = selectedSamples.lowerBound..<sample
     }

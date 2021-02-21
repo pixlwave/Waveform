@@ -3,14 +3,14 @@ import SwiftUI
 struct Highlight: Shape {
     let selectedSamples: SampleRange
     
-    @EnvironmentObject var audio: WaveformAudio
+    @EnvironmentObject var generator: WaveformGenerator
     
     func path(in rect: CGRect) -> Path {
         Path { path in
-            guard selectedSamples.count > 0, selectedSamples.overlaps(audio.renderSamples) else { return }
+            guard selectedSamples.count > 0, selectedSamples.overlaps(generator.renderSamples) else { return }
             
-            let startPosition = max(0, audio.position(of: selectedSamples.lowerBound))
-            let endPosition = min(audio.position(of: selectedSamples.upperBound), audio.width)
+            let startPosition = max(0, generator.position(of: selectedSamples.lowerBound))
+            let endPosition = min(generator.position(of: selectedSamples.upperBound), generator.width)
             
             let startIndex = Int(startPosition)
             let endIndex = Int(endPosition)
@@ -19,13 +19,13 @@ struct Highlight: Shape {
             
             for index in startIndex..<endIndex {
                 let x = CGFloat(index)
-                let max = rect.midY + (rect.midY * CGFloat(audio.sampleData[index].max))
+                let max = rect.midY + (rect.midY * CGFloat(generator.sampleData[index].max))
                 path.addLine(to: CGPoint(x: x, y: max))
             }
             
             for index in (startIndex..<endIndex).reversed() {
                 let x = CGFloat(index)
-                let min = rect.midY + (rect.midY * CGFloat(audio.sampleData[index].min))
+                let min = rect.midY + (rect.midY * CGFloat(generator.sampleData[index].min))
                 path.addLine(to: CGPoint(x: x, y: min))
             }
             

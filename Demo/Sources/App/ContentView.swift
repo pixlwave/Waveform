@@ -3,7 +3,7 @@ import AVFoundation
 import Waveform
 
 struct ContentView: View {
-    @StateObject var audio = WaveformAudio(audioFile: try! AVAudioFile(forReading: AudioResources.aberration))!
+    @StateObject var generator = WaveformGenerator(audioFile: try! AVAudioFile(forReading: AudioResources.aberration))!
     @State var selectedSamples = 3_000_000..<5_000_000
 
     @State var isShowingDebug = false
@@ -17,7 +17,7 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Waveform(audio: audio, selectedSamples: $selectedSamples)
+            Waveform(generator: generator, selectedSamples: $selectedSamples)
                 .layoutPriority(1)
                 .foregroundColor(waveformColor)
                 .background(backgroundColor)
@@ -50,18 +50,18 @@ struct ContentView: View {
         }
         .padding()
         .onChange(of: start) {
-            let sample = Int($0 * Double(audio.audioFile.length))
-            let startSample = sample < audio.renderSamples.upperBound ? sample : audio.renderSamples.upperBound - 1
-            audio.renderSamples = startSample..<audio.renderSamples.upperBound
+            let sample = Int($0 * Double(generator.audioFile.length))
+            let startSample = sample < generator.renderSamples.upperBound ? sample : generator.renderSamples.upperBound - 1
+            generator.renderSamples = startSample..<generator.renderSamples.upperBound
         }
         .onChange(of: end) {
-            let sample = Int($0 * Double(audio.audioFile.length))
-            let endSample = sample > audio.renderSamples.lowerBound ? sample : audio.renderSamples.lowerBound + 1
-            audio.renderSamples = audio.renderSamples.lowerBound..<endSample
+            let sample = Int($0 * Double(generator.audioFile.length))
+            let endSample = sample > generator.renderSamples.lowerBound ? sample : generator.renderSamples.lowerBound + 1
+            generator.renderSamples = generator.renderSamples.lowerBound..<endSample
         }
-        .onChange(of: audio.renderSamples) {
-            start = Double($0.lowerBound) / Double(audio.audioBuffer.frameLength)
-            end = Double($0.upperBound) / Double(audio.audioBuffer.frameLength)
+        .onChange(of: generator.renderSamples) {
+            start = Double($0.lowerBound) / Double(generator.audioBuffer.frameLength)
+            end = Double($0.upperBound) / Double(generator.audioBuffer.frameLength)
         }
     }
 }
