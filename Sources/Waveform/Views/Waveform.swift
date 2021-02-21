@@ -26,9 +26,12 @@ struct Waveform: View {
         GeometryReader { geometry in
             Renderer(waveformData: audio.sampleData)
                 .preference(key: SizeKey.self, value: geometry.size)
-            Selection(selectedSamples: selectedSamples, renderSamples: audio.renderSamples, samplesPerPoint: samplesPerPoint)
-                .foregroundColor(.accentColor)
-                .blendMode(selectionBlendMode)
+            
+            if selectedSamples.count > 0, samplesPerPoint > 0 {
+                Selection(selectedSamples: $selectedSamples, renderSamples: audio.renderSamples, samplesPerPoint: samplesPerPoint)
+                    .foregroundColor(.accentColor)
+                    .blendMode(selectionBlendMode)
+            }
         }
         .gesture(magnification)
         .simultaneousGesture(drag)
