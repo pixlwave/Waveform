@@ -5,7 +5,7 @@ class WaveformAudio: ObservableObject {
     let audioFile: AVAudioFile
     let audioBuffer: AVAudioPCMBuffer
     
-    private var generateTask: GenerateWaveformTask?
+    private var generateTask: GenerateTask?
     @Published private(set) var sampleData: [SampleData] = []
     @Published var renderSamples: ClosedRange<Int>
     
@@ -27,7 +27,7 @@ class WaveformAudio: ObservableObject {
     
     func refreshData(width: CGFloat) {
         generateTask?.cancel()
-        generateTask = GenerateWaveformTask(audioBuffer: audioBuffer)
+        generateTask = GenerateTask(audioBuffer: audioBuffer)
         
         generateTask?.resume(width: width, renderSamples: renderSamples) { sampleData in
             self.sampleData = sampleData

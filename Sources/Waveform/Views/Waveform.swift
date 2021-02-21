@@ -14,7 +14,7 @@ struct Waveform: View {
     
     var body: some View {
         GeometryReader { geometry in
-            WaveformRenderer(waveformData: audio.sampleData)
+            Renderer(waveformData: audio.sampleData)
                 .preference(key: SizeKey.self, value: geometry.size)
             Selection(selectedSamples: selectedSamples, renderSamples: audio.renderSamples, samplesPerPoint: samplesPerPoint)
                 .foregroundColor(.accentColor)
