@@ -64,19 +64,14 @@ struct Waveform: View {
         DragGesture()
             .onChanged {
                 let panAmount = $0.translation.width - panGestureValue
-                pan(amount: panAmount)
+                pan(offset: -panAmount)
                 panGestureValue = $0.translation.width
             }
             .onEnded {
                 let panAmount = $0.translation.width - panGestureValue
-                pan(amount: panAmount)
+                pan(offset: -panAmount)
                 panGestureValue = 0
             }
-    }
-    
-    var samplesPerPoint: Int {
-        guard audio.width != 0 else { return 0 }
-        return audio.renderSamples.count / Int(audio.width)
     }
     
     func zoom(amount: CGFloat) {
@@ -88,17 +83,19 @@ struct Waveform: View {
         audio.renderSamples = renderStartSample..<renderEndSample
     }
     
-    func pan(amount: CGFloat) {
-        let delta = samplesPerPoint * Int(amount)
-        var renderStartSample = audio.renderSamples.lowerBound - delta
-        var renderEndSample = audio.renderSamples.upperBound - delta
-        if renderStartSample < 0 {
-            renderStartSample = 0
-            renderEndSample = audio.renderSamples.count
-        } else if renderEndSample > Int(audio.audioBuffer.frameLength) {
-            renderEndSample = Int(audio.audioBuffer.frameLength)
-            renderStartSample = renderEndSample - audio.renderSamples.count
+    func pan(offset: CGFloat) {
+        let count = audio.renderSamples.count
+        var startSample = audio.sample(audio.renderSamples.lowerBound, with: offset)
+        var endSample = startSample + count
+        
+        if startSample < 0 {
+            startSample = 0
+            endSample = audio.renderSamples.count
+        } else if endSample > Int(audio.audioBuffer.frameLength) {
+            endSample = Int(audio.audioBuffer.frameLength)
+            startSample = endSample - audio.renderSamples.count
         }
-        audio.renderSamples = renderStartSample..<renderEndSample
+        
+        audio.renderSamples = startSample..<endSample
     }
 }
