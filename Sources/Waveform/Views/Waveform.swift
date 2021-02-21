@@ -35,7 +35,9 @@ struct Waveform: View {
             }
             .padding(.bottom, 30)
             
-            Handle(selectedSamples: $selectedSamples)
+            StartHandle(selectedSamples: $selectedSamples)
+                .foregroundColor(.accentColor)
+            EndHandle(selectedSamples: $selectedSamples)
                 .foregroundColor(.accentColor)
         }
         .gesture(SimultaneousGesture(zoom, pan))
