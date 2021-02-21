@@ -2,7 +2,7 @@ import SwiftUI
 import AVFoundation
 import Accelerate
 
-typealias SampleRange = ClosedRange<Int>
+typealias SampleRange = Range<Int>
 
 struct Waveform: View {
     @ObservedObject var audio: WaveformAudio
@@ -34,7 +34,7 @@ struct Waveform: View {
                     .opacity(0.7)
                     .blendMode(selectionBlendMode)
             }
-            .padding(.bottom, 40)
+            .padding(.bottom, 30)
             Handle(selectedSamples: $selectedSamples, renderSamples: audio.renderSamples, samplesPerPoint: samplesPerPoint)
                 .foregroundColor(.accentColor)
         }
@@ -91,7 +91,7 @@ struct Waveform: View {
         let delta = (count - Int(newCount)) / 2
         let renderStartSample = max(0, audio.renderSamples.lowerBound + delta)
         let renderEndSample = min(audio.renderSamples.upperBound - delta, Int(audio.audioBuffer.frameLength))
-        audio.renderSamples = renderStartSample...renderEndSample
+        audio.renderSamples = renderStartSample..<renderEndSample
     }
     
     func pan(amount: CGFloat) {
@@ -105,7 +105,7 @@ struct Waveform: View {
             renderEndSample = Int(audio.audioBuffer.frameLength)
             renderStartSample = renderEndSample - audio.renderSamples.count
         }
-        audio.renderSamples = renderStartSample...renderEndSample
+        audio.renderSamples = renderStartSample..<renderEndSample
     }
     
     func refreshData() {

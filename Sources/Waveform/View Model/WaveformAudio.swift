@@ -24,7 +24,7 @@ class WaveformAudio: ObservableObject {
         
         self.audioFile = audioFile
         self.audioBuffer = audioBuffer
-        self.renderSamples = 0...Int(capacity)
+        self.renderSamples = 0..<Int(capacity)
     }
     
     func refreshData(width: CGFloat) {
