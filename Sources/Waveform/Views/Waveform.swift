@@ -7,7 +7,6 @@ typealias SampleRange = Range<Int>
 struct Waveform: View {
     @ObservedObject var audio: WaveformAudio
     
-    @State private var frameSize: CGSize = .zero
     @State private var zoomGestureValue: CGFloat = 1
     @State private var panGestureValue: CGFloat = 0
     
@@ -29,26 +28,21 @@ struct Waveform: View {
             ZStack {
                 Renderer(waveformData: audio.sampleData)
                     .preference(key: SizeKey.self, value: geometry.size)
-                Highlight(selectedSamples: selectedSamples, renderSamples: audio.renderSamples, samplesPerPoint: samplesPerPoint)
+                Highlight(selectedSamples: selectedSamples)
                     .foregroundColor(.accentColor)
                     .opacity(0.7)
                     .blendMode(selectionBlendMode)
             }
             .padding(.bottom, 30)
-            Handle(selectedSamples: $selectedSamples, renderSamples: audio.renderSamples, samplesPerPoint: samplesPerPoint)
+            
+            Handle(selectedSamples: $selectedSamples)
                 .foregroundColor(.accentColor)
         }
         .gesture(SimultaneousGesture(zoom, pan))
+        .environmentObject(audio)
         .onPreferenceChange(SizeKey.self) {
-            guard frameSize != $0 else { return }
-            frameSize = $0
-        }
-        .onChange(of: frameSize) {
-            print("Frame size \($0)")
-            refreshData()
-        }
-        .onChange(of: audio.renderSamples) { _ in
-            refreshData()
+            guard audio.width != $0.width else { return }
+            audio.width = $0.width
         }
     }
     
@@ -81,8 +75,8 @@ struct Waveform: View {
     }
     
     var samplesPerPoint: Int {
-        guard frameSize.width != 0 else { return 0 }
-        return audio.renderSamples.count / Int(frameSize.width)
+        guard audio.width != 0 else { return 0 }
+        return audio.renderSamples.count / Int(audio.width)
     }
     
     func zoom(amount: CGFloat) {
@@ -106,9 +100,5 @@ struct Waveform: View {
             renderStartSample = renderEndSample - audio.renderSamples.count
         }
         audio.renderSamples = renderStartSample..<renderEndSample
-    }
-    
-    func refreshData() {
-        audio.refreshData(width: frameSize.width)
     }
 }

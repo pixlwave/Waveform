@@ -7,9 +7,13 @@ class WaveformAudio: ObservableObject {
     
     private var generateTask: GenerateTask?
     @Published private(set) var sampleData: [SampleData] = []
-    @Published var renderSamples: SampleRange
+    @Published var renderSamples: SampleRange {
+        didSet { refreshData() }
+    }
     
-    var width: CGFloat = 0      // would publishing this be bad?
+    var width: CGFloat = 0 {     // would publishing this be bad?
+        didSet { refreshData() }
+    }
     
     init?(audioFile: AVAudioFile) {
         let capacity = AVAudioFrameCount(audioFile.length)
@@ -27,7 +31,7 @@ class WaveformAudio: ObservableObject {
         self.renderSamples = 0..<Int(capacity)
     }
     
-    func refreshData(width: CGFloat) {
+    func refreshData() {
         generateTask?.cancel()
         generateTask = GenerateTask(audioBuffer: audioBuffer)
         
@@ -44,6 +48,13 @@ class WaveformAudio: ObservableObject {
     
     func sample(for position: CGFloat) -> Int {
         let ratio = CGFloat(renderSamples.count) / width
-        return renderSamples.lowerBound + Int(position * ratio)
+        let sample = renderSamples.lowerBound + Int(position * ratio)
+        return min(max(0, sample), Int(audioBuffer.frameLength))
+    }
+    
+    func sample(_ oldSample: Int, with offset: CGFloat) -> Int {
+        let ratio = CGFloat(renderSamples.count) / width
+        let sample = oldSample + Int(offset * ratio)
+        return min(max(0, sample), Int(audioBuffer.frameLength))
     }
 }
