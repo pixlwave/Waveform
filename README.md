@@ -4,7 +4,7 @@ A SwiftUI Package to display an interactive waveform of an audio file.
 
 ![Zooming Waveform](https://github.com/pixlwave/Waveform/blob/main/Images/zoom.gif?raw=true)
 
-The project is currently in a very early stage having been created as part of SwiftUI Jam 2021. Code from the end of the Jam will be in the `swiftuijam` branch.
+The project is currently in a very early stage having been created as part of SwiftUI Jam 2021. Code from the end of the Jam will be in the [swiftuijam](https://github.com/pixlwave/Waveform/tree/swiftuijam) branch.
 
 ## Installation
 
