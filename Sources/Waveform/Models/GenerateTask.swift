@@ -13,7 +13,7 @@ class GenerateTask {
         isCancelled = true
     }
     
-    func resume(width: CGFloat, renderSamples: ClosedRange<Int>, completion: @escaping ([SampleData]) -> Void) {
+    func resume(width: CGFloat, renderSamples: SampleRange, completion: @escaping ([SampleData]) -> Void) {
         var sampleData = [SampleData](repeating: .zero, count: Int(width))
         
         DispatchQueue.global(qos: .userInteractive).async {

@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct Highlight: Shape {
-    let selectedSamples: ClosedRange<Int>
-    let renderSamples: ClosedRange<Int>
+    let selectedSamples: SampleRange
+    let renderSamples: SampleRange
     let samplesPerPoint: Int
     
     func path(in rect: CGRect) -> Path {

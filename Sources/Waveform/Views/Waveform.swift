@@ -2,6 +2,8 @@ import SwiftUI
 import AVFoundation
 import Accelerate
 
+typealias SampleRange = ClosedRange<Int>
+
 struct Waveform: View {
     @ObservedObject var audio: WaveformAudio
     
@@ -9,12 +11,12 @@ struct Waveform: View {
     @State private var zoomGestureValue: CGFloat = 1
     @State private var panGestureValue: CGFloat = 0
     
-    @Binding var selectedSamples: ClosedRange<Int>
+    @Binding var selectedSamples: SampleRange
     @Binding var selectionBlendMode: BlendMode
     
     @Environment(\.colorScheme) var colorScheme
     
-    init(audio: WaveformAudio, selectedSamples: Binding<ClosedRange<Int>>, selectionBlendMode: Binding<BlendMode>? = nil) {
+    init(audio: WaveformAudio, selectedSamples: Binding<SampleRange>, selectionBlendMode: Binding<BlendMode>? = nil) {
         self.audio = audio
         self._selectedSamples = selectedSamples
         

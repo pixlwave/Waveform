@@ -2,11 +2,9 @@ import SwiftUI
 
 struct Handle: View {
     let radius: CGFloat = 15
-    @Binding var selectedSamples: ClosedRange<Int>
-    let renderSamples: ClosedRange<Int>
+    @Binding var selectedSamples: SampleRange
+    let renderSamples: SampleRange
     let samplesPerPoint: Int
-    
-    @State var dragGestureValue: CGFloat = 0
     
     var xPosition: CGFloat {
         guard samplesPerPoint > 0 else { return 0 }
