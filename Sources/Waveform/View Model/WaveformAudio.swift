@@ -1,12 +1,17 @@
 import AVFoundation
 import SwiftUI
 
+/// An object that generates waveform data from an `AVAudioFile`.
 public class WaveformAudio: ObservableObject {
+    /// The audio file initially used to create the generator.
     public let audioFile: AVAudioFile
+    /// An audio buffer containing the original audio file decoded as PCM data.
     public let audioBuffer: AVAudioPCMBuffer
     
     private var generateTask: GenerateTask?
     @Published private(set) var sampleData: [SampleData] = []
+    
+    /// The range of samples to display. The value will update as the waveform is zoomed and panned.
     @Published public var renderSamples: SampleRange {
         didSet { refreshData() }
     }
@@ -15,6 +20,8 @@ public class WaveformAudio: ObservableObject {
         didSet { refreshData() }
     }
     
+    /// Creates an instance from an `AVAudioFile`.
+    /// - Parameter audioFile: The audio file to generate waveform data from.
     public init?(audioFile: AVAudioFile) {
         let capacity = AVAudioFrameCount(audioFile.length)
         guard let audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: capacity) else { return nil }

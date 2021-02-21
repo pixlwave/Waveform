@@ -2,18 +2,21 @@ import SwiftUI
 import AVFoundation
 import Accelerate
 
+/// A range of integers representing samples from an AVAudioFile.
 public typealias SampleRange = Range<Int>
 
+/// An interactive waveform generated from an `AVAudioFile`.
 public struct Waveform: View {
     @ObservedObject var audio: WaveformAudio
     
     @State private var zoomGestureValue: CGFloat = 1
     @State private var panGestureValue: CGFloat = 0
-    
     @Binding var selectedSamples: SampleRange
     
-    @Environment(\.colorScheme) var colorScheme
-    
+    /// Creates an instance powered by the supplied generator.
+    /// - Parameters:
+    ///   - audio: The object that will supply waveform data.
+    ///   - selectedSamples: A binding to a `SampleRange` to update with the selection chosen in the waveform.
     public init(audio: WaveformAudio, selectedSamples: Binding<SampleRange>) {
         self.audio = audio
         self._selectedSamples = selectedSamples
