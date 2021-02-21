@@ -24,14 +24,19 @@ struct Waveform: View {
     
     var body: some View {
         GeometryReader { geometry in
-            Renderer(waveformData: audio.sampleData)
-                .preference(key: SizeKey.self, value: geometry.size)
-            Selection(selectedSamples: selectedSamples, renderSamples: audio.renderSamples, samplesPerPoint: samplesPerPoint)
+            ZStack {
+                Renderer(waveformData: audio.sampleData)
+                    .preference(key: SizeKey.self, value: geometry.size)
+                Highlight(selectedSamples: selectedSamples, renderSamples: audio.renderSamples, samplesPerPoint: samplesPerPoint)
+                    .foregroundColor(.accentColor)
+                    .opacity(0.7)
+                    .blendMode(selectionBlendMode)
+            }
+            .padding(.bottom, 40)
+            Handle(selectedSamples: $selectedSamples, renderSamples: audio.renderSamples, samplesPerPoint: samplesPerPoint)
                 .foregroundColor(.accentColor)
-                .blendMode(selectionBlendMode)
         }
-        .gesture(magnification)
-        .simultaneousGesture(drag)
+        .gesture(SimultaneousGesture(magnification, drag))
         .onPreferenceChange(SizeKey.self) {
             guard frameSize != $0 else { return }
             frameSize = $0

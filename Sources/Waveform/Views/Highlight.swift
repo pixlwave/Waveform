@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Selection: Shape {
+struct Highlight: Shape {
     let selectedSamples: ClosedRange<Int>
     let renderSamples: ClosedRange<Int>
     let samplesPerPoint: Int
