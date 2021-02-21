@@ -3,20 +3,21 @@ import AVFoundation
 
 struct ContentView: View {
     @StateObject var audio = WaveformAudio(audioFile: try! AVAudioFile(forReading: AudioResources.aberration))!
+    @State var selectedSamples = 3_000_000...5_000_000
 
     @State var isShowingDebug = true
 
     @State var start: Double = 0
     @State var end: Double = 1
     
-    @State var waveformColor = Color.black
-    @State var backgroundColor = Color(red: 0.9, green: 0.9, blue: 0.9)
+    @State var waveformColor = Color.primary
+    @State var backgroundColor = Color.clear
     @State var selectionColor = Color.accentColor
-    @State var blendMode: BlendMode = .normal
-    
+    @State var blendMode = BlendMode.screen
+
     var body: some View {
         VStack {
-            Waveform(audio: audio, selectionBlendMode: $blendMode)
+            Waveform(audio: audio, selectedSamples: $selectedSamples, selectionBlendMode: $blendMode)
                 .layoutPriority(1)
                 .foregroundColor(waveformColor)
                 .background(backgroundColor)

@@ -9,8 +9,18 @@ struct Waveform: View {
     @State private var zoomGestureValue: CGFloat = 1
     @State private var panGestureValue: CGFloat = 0
     
-    @State var selectedSamples = 3_000_000...5_000_000
+    @Binding var selectedSamples: ClosedRange<Int>
     @Binding var selectionBlendMode: BlendMode
+    
+    @Environment(\.colorScheme) var colorScheme
+    
+    init(audio: WaveformAudio, selectedSamples: Binding<ClosedRange<Int>>, selectionBlendMode: Binding<BlendMode>? = nil) {
+        self.audio = audio
+        self._selectedSamples = selectedSamples
+        
+        self._selectionBlendMode = .constant(.normal)   // needs initialising before the next line?
+        self._selectionBlendMode = selectionBlendMode ?? (colorScheme == .light ? .constant(.screen) : .constant(.multiply))
+    }
     
     var body: some View {
         GeometryReader { geometry in
