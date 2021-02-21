@@ -22,6 +22,10 @@ struct Waveform: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
+                // invisible rectangle needed to register gestures that aren't on top of the waveform
+                Rectangle()
+                    .foregroundColor(Color(.systemBackground).opacity(0.01))
+                
                 Renderer(waveformData: audio.sampleData)
                     .preference(key: SizeKey.self, value: geometry.size)
                 Highlight(selectedSamples: selectedSamples)
