@@ -12,14 +12,17 @@ public struct Waveform: View {
     @State private var zoomGestureValue: CGFloat = 1
     @State private var panGestureValue: CGFloat = 0
     @Binding var selectedSamples: SampleRange
+    @Binding var selectionEnabled: Bool
     
     /// Creates an instance powered by the supplied generator.
     /// - Parameters:
     ///   - generator: The object that will supply waveform data.
     ///   - selectedSamples: A binding to a `SampleRange` to update with the selection chosen in the waveform.
-    public init(generator: WaveformGenerator, selectedSamples: Binding<SampleRange>) {
+    ///   - selectionEnabled: A binding to enable/disable selection on the waveform
+    public init(generator: WaveformGenerator, selectedSamples: Binding<SampleRange>, selectionEnabled: Binding<Bool>) {
         self.generator = generator
         self._selectedSamples = selectedSamples
+        self._selectionEnabled = selectionEnabled
     }
     
     public var body: some View {
@@ -31,16 +34,21 @@ public struct Waveform: View {
                 
                 Renderer(waveformData: generator.sampleData)
                     .preference(key: SizeKey.self, value: geometry.size)
-                Highlight(selectedSamples: selectedSamples)
-                    .foregroundColor(.accentColor)
-                    .opacity(0.7)
+                
+                if selectionEnabled {
+                    Highlight(selectedSamples: selectedSamples)
+                        .foregroundColor(.accentColor)
+                        .opacity(0.7)
+                }
             }
-            .padding(.bottom, 30)
+            .padding(.bottom, selectionEnabled ? 30 : 0)
             
-            StartHandle(selectedSamples: $selectedSamples)
-                .foregroundColor(.accentColor)
-            EndHandle(selectedSamples: $selectedSamples)
-                .foregroundColor(.accentColor)
+            if selectionEnabled {
+                StartHandle(selectedSamples: $selectedSamples)
+                    .foregroundColor(.accentColor)
+                EndHandle(selectedSamples: $selectedSamples)
+                    .foregroundColor(.accentColor)
+            }
         }
         .gesture(SimultaneousGesture(zoom, pan))
         .environmentObject(generator)

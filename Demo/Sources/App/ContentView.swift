@@ -4,7 +4,7 @@ import Waveform
 
 struct ContentView: View {
     @StateObject var generator = WaveformGenerator(audioFile: try! AVAudioFile(forReading: AudioResources.aberration))!
-    @State var selectedSamples = 3_000_000..<5_000_000
+    @State var selectedSamples = 0..<1
 
     @State var isShowingDebug = false
 
@@ -14,10 +14,11 @@ struct ContentView: View {
     @State var waveformColor = Color.primary
     @State var backgroundColor = Color.clear
     @State var selectionColor = Color.accentColor
+    @State var selectionEnabled = false
 
     var body: some View {
         VStack {
-            Waveform(generator: generator, selectedSamples: $selectedSamples)
+            Waveform(generator: generator, selectedSamples: $selectedSamples, selectionEnabled: $selectionEnabled)
                 .layoutPriority(1)
                 .foregroundColor(waveformColor)
                 .background(backgroundColor)
@@ -29,6 +30,10 @@ struct ContentView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top)
                 Spacer()
+                Button { withAnimation { selectionEnabled.toggle() } } label: {
+                    Image(systemName: "selection.pin.in.out")
+                        .opacity(selectionEnabled ? 1 : 0.5)
+                }
                 Button { withAnimation { isShowingDebug.toggle() } } label: {
                     Image(systemName: isShowingDebug ? "chevron.down.circle" : "chevron.up.circle" )
                 }
@@ -62,6 +67,9 @@ struct ContentView: View {
         .onChange(of: generator.renderSamples) {
             start = Double($0.lowerBound) / Double(generator.audioBuffer.frameLength)
             end = Double($0.upperBound) / Double(generator.audioBuffer.frameLength)
+        }
+        .onAppear {
+            selectedSamples = 0..<Int(generator.audioBuffer.frameLength)
         }
     }
 }
