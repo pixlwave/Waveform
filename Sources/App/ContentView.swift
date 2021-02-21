@@ -3,17 +3,24 @@ import AVFoundation
 
 struct ContentView: View {
     @StateObject var audio = WaveformAudio(audioFile: try! AVAudioFile(forReading: AudioResources.aberration))!
-    
+
+    @State var isShowingDebug = true
+
     @State var start: Double = 0
     @State var end: Double = 1
     
-    @State var isShowingDebug = true
+    @State var waveformColor = Color.black
+    @State var backgroundColor = Color(red: 0.9, green: 0.9, blue: 0.9)
+    @State var selectionColor = Color.accentColor
+    @State var blendMode: BlendMode = .normal
     
     var body: some View {
         VStack {
-            Waveform(audio: audio)
-                .environmentObject(audio)
-                .background(Color(red: 0.9, green: 0.9, blue: 0.9))
+            Waveform(audio: audio, selectionBlendMode: $blendMode)
+                .layoutPriority(1)
+                .foregroundColor(waveformColor)
+                .background(backgroundColor)
+                .accentColor(selectionColor)
                 .cornerRadius(15)
             
             HStack {
@@ -30,6 +37,44 @@ struct ContentView: View {
                 VStack {
                     Slider(value: $start, in: 0...1)
                     Slider(value: $end, in: 0...1)
+                    HStack {
+                        ColorPicker("Waveform Colour:", selection: $waveformColor)
+                        Spacer()
+                        ColorPicker("Background Colour:", selection: $backgroundColor)
+                        Spacer()
+                        ColorPicker("Selection Colour:", selection: $selectionColor)
+                        Spacer()
+                        Picker("Blend Mode:", selection: $blendMode) {
+                            Group {
+                                Text("normal").tag(BlendMode.normal)
+                                Text("multiply").tag(BlendMode.multiply)
+                                Text("screen").tag(BlendMode.screen)
+                                Text("overlay").tag(BlendMode.overlay)
+                                Text("darken").tag(BlendMode.darken)
+                                Text("lighten").tag(BlendMode.lighten)
+                                Text("colorDodge").tag(BlendMode.colorDodge)
+                            }
+                            Group {
+                                Text("colorBurn").tag(BlendMode.colorBurn)
+                                Text("softLight").tag(BlendMode.softLight)
+                                Text("hardLight").tag(BlendMode.hardLight)
+                                Text("difference").tag(BlendMode.difference)
+                                Text("exclusion").tag(BlendMode.exclusion)
+                                Text("hue").tag(BlendMode.hue)
+                                Text("saturation").tag(BlendMode.saturation)
+                            }
+                            Group {
+                                Text("color").tag(BlendMode.color)
+                                Text("luminosity").tag(BlendMode.luminosity)
+                                Text("sourceAtop").tag(BlendMode.sourceAtop)
+                                Text("destinationOver").tag(BlendMode.destinationOver)
+                                Text("destinationOut").tag(BlendMode.destinationOut)
+                                Text("plusDarker").tag(BlendMode.plusDarker)
+                                Text("plusLighter").tag(BlendMode.plusLighter)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                    }
                 }
                 .transition(.offset(x: 0, y: 100))
             }

@@ -9,10 +9,16 @@ struct Waveform: View {
     @State private var zoomGestureValue: CGFloat = 1
     @State private var panGestureValue: CGFloat = 0
     
+    @State var selectedSamples = 3_000_000...5_000_000
+    @Binding var selectionBlendMode: BlendMode
+    
     var body: some View {
         GeometryReader { geometry in
             WaveformRenderer(waveformData: audio.sampleData)
                 .preference(key: SizeKey.self, value: geometry.size)
+            Selection(selectedSamples: selectedSamples, renderSamples: audio.renderSamples, samplesPerPoint: samplesPerPoint)
+                .foregroundColor(.accentColor)
+                .blendMode(selectionBlendMode)
         }
         .gesture(magnification)
         .simultaneousGesture(drag)
@@ -57,6 +63,11 @@ struct Waveform: View {
             }
     }
     
+    var samplesPerPoint: Int {
+        guard frameSize.width != 0 else { return 0 }
+        return audio.renderSamples.count / Int(frameSize.width)
+    }
+    
     func zoom(amount: CGFloat) {
         let count = audio.renderSamples.count
         let newCount = CGFloat(count) / amount
@@ -67,7 +78,6 @@ struct Waveform: View {
     }
     
     func pan(amount: CGFloat) {
-        let samplesPerPoint = audio.renderSamples.count / Int(frameSize.width)
         let delta = samplesPerPoint * Int(amount)
         var renderStartSample = audio.renderSamples.lowerBound - delta
         var renderEndSample = audio.renderSamples.upperBound - delta

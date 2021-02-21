@@ -17,6 +17,7 @@
 		A52C557525E02F12008822B1 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C557425E02F12008822B1 /* SampleData.swift */; };
 		A52C557825E03D2F008822B1 /* SizeKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C557725E03D2F008822B1 /* SizeKey.swift */; };
 		A52C558225E068E0008822B1 /* WaveformRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52C558125E068E0008822B1 /* WaveformRenderer.swift */; };
+		A54B5A9925E2641800B3AFF5 /* Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54B5A9825E2641800B3AFF5 /* Selection.swift */; };
 		A597F64A25E1740D00AAB332 /* WaveformAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = A597F64925E1740D00AAB332 /* WaveformAudio.swift */; };
 		A5AD696625E025DA000B0627 /* WaveformDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AD696525E025DA000B0627 /* WaveformDemoApp.swift */; };
 		A5AD696825E025DA000B0627 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AD696725E025DA000B0627 /* ContentView.swift */; };
@@ -37,6 +38,7 @@
 		A52C557425E02F12008822B1 /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 		A52C557725E03D2F008822B1 /* SizeKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeKey.swift; sourceTree = "<group>"; };
 		A52C558125E068E0008822B1 /* WaveformRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformRenderer.swift; sourceTree = "<group>"; };
+		A54B5A9825E2641800B3AFF5 /* Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selection.swift; sourceTree = "<group>"; };
 		A597F64925E1740D00AAB332 /* WaveformAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformAudio.swift; sourceTree = "<group>"; };
 		A597F64F25E1796D00AAB332 /* WaveformDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WaveformDemo.entitlements; sourceTree = "<group>"; };
 		A5AD696225E025DA000B0627 /* WaveformDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaveformDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +80,34 @@
 				A52C556125E02CA0008822B1 /* Horizon.aif */,
 			);
 			path = Clips;
+			sourceTree = "<group>";
+		};
+		A54B5A9525E263B700B3AFF5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A5AD698225E02986000B0627 /* Waveform.swift */,
+				A52C558125E068E0008822B1 /* WaveformRenderer.swift */,
+				A54B5A9825E2641800B3AFF5 /* Selection.swift */,
+				A52C557725E03D2F008822B1 /* SizeKey.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A54B5A9625E263CA00B3AFF5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A5C7DB9C25E130EB007AFF32 /* GenerateWaveformTask.swift */,
+				A52C557425E02F12008822B1 /* SampleData.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A54B5A9725E263F200B3AFF5 /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+				A597F64925E1740D00AAB332 /* WaveformAudio.swift */,
+			);
+			path = "View Model";
 			sourceTree = "<group>";
 		};
 		A5AD695925E025DA000B0627 = {
@@ -148,12 +178,9 @@
 		A5AD698125E0296D000B0627 /* Waveform */ = {
 			isa = PBXGroup;
 			children = (
-				A5AD698225E02986000B0627 /* Waveform.swift */,
-				A597F64925E1740D00AAB332 /* WaveformAudio.swift */,
-				A5C7DB9C25E130EB007AFF32 /* GenerateWaveformTask.swift */,
-				A52C557425E02F12008822B1 /* SampleData.swift */,
-				A52C558125E068E0008822B1 /* WaveformRenderer.swift */,
-				A52C557725E03D2F008822B1 /* SizeKey.swift */,
+				A54B5A9525E263B700B3AFF5 /* Views */,
+				A54B5A9725E263F200B3AFF5 /* View Model */,
+				A54B5A9625E263CA00B3AFF5 /* Models */,
 			);
 			path = Waveform;
 			sourceTree = "<group>";
@@ -241,6 +268,7 @@
 				A5AD696625E025DA000B0627 /* WaveformDemoApp.swift in Sources */,
 				A52C558225E068E0008822B1 /* WaveformRenderer.swift in Sources */,
 				A5AD698325E02986000B0627 /* Waveform.swift in Sources */,
+				A54B5A9925E2641800B3AFF5 /* Selection.swift in Sources */,
 				A52C557025E02D95008822B1 /* AudioResources.swift in Sources */,
 				A52C557525E02F12008822B1 /* SampleData.swift in Sources */,
 				A52C557825E03D2F008822B1 /* SizeKey.swift in Sources */,
