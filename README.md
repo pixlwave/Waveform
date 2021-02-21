@@ -35,6 +35,15 @@ var body: some View {
 }
 ```
 
+The colour scheme can be customised via the standard colour modifiers:
+
+```swift
+Waveform(generator: generator, selectedSamples: $selection, selectionEnabled: .constant(true))
+    .foregroundColor(waveformColor)
+    .background(backgroundColor)
+    .accentColor(selectionColor)
+```
+
 ## Caveats
 
 - More work is required on optimisation for acceptable performance on older devices.
