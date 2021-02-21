@@ -36,7 +36,7 @@ struct Waveform: View {
             Handle(selectedSamples: $selectedSamples, renderSamples: audio.renderSamples, samplesPerPoint: samplesPerPoint)
                 .foregroundColor(.accentColor)
         }
-        .gesture(SimultaneousGesture(magnification, drag))
+        .gesture(SimultaneousGesture(zoom, pan))
         .onPreferenceChange(SizeKey.self) {
             guard frameSize != $0 else { return }
             frameSize = $0
@@ -50,7 +50,7 @@ struct Waveform: View {
         }
     }
     
-    var magnification: some Gesture {
+    var zoom: some Gesture {
         MagnificationGesture()
             .onChanged {
                 let zoomAmount = $0 / zoomGestureValue
@@ -64,7 +64,7 @@ struct Waveform: View {
             }
     }
     
-    var drag: some Gesture {
+    var pan: some Gesture {
         DragGesture()
             .onChanged {
                 let panAmount = $0.translation.width - panGestureValue

@@ -19,7 +19,7 @@ struct Handle: View {
                 .frame(width: 2)
             Circle()
                 .frame(width: 2 * radius, height: 2 * radius, alignment: .center)
-                .simultaneousGesture(drag)
+                .gesture(drag)
         }
         .offset(x: xPosition - radius)
     }
