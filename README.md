@@ -34,3 +34,8 @@ var body: some View {
     Waveform(generator: generator, selectedSamples: $selection, selectionEnabled: .constant(true))
 }
 ```
+
+## Caveats
+
+- More work is required on optimisation for acceptable performance on older devices.
+- Any audio file you use is loaded into memory in the `WaveformGenerator`. For now it would be worth watching your app's memory usage until this is addressed.
