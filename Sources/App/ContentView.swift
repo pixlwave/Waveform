@@ -37,11 +37,11 @@ struct ContentView: View {
                     Slider(value: $start, in: 0...1)
                     Slider(value: $end, in: 0...1)
                     HStack {
-                        ColorPicker("Waveform Colour:", selection: $waveformColor)
+                        ColorPicker("Waveform:", selection: $waveformColor)
                         Spacer()
-                        ColorPicker("Background Colour:", selection: $backgroundColor)
+                        ColorPicker("Background:", selection: $backgroundColor)
                         Spacer()
-                        ColorPicker("Selection Colour:", selection: $selectionColor)
+                        ColorPicker("Selection:", selection: $selectionColor)
                     }
                 }
                 .transition(.offset(x: 0, y: 150))
