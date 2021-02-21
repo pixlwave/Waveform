@@ -5,7 +5,7 @@ struct ContentView: View {
     @StateObject var audio = WaveformAudio(audioFile: try! AVAudioFile(forReading: AudioResources.aberration))!
     @State var selectedSamples = 3_000_000..<5_000_000
 
-    @State var isShowingDebug = true
+    @State var isShowingDebug = false
 
     @State var start: Double = 0
     @State var end: Double = 1
@@ -57,6 +57,10 @@ struct ContentView: View {
             let sample = Int($0 * Double(audio.audioFile.length))
             let endSample = sample > audio.renderSamples.lowerBound ? sample : audio.renderSamples.lowerBound + 1
             audio.renderSamples = audio.renderSamples.lowerBound..<endSample
+        }
+        .onChange(of: audio.renderSamples) {
+            start = Double($0.lowerBound) / Double(audio.audioBuffer.frameLength)
+            end = Double($0.upperBound) / Double(audio.audioBuffer.frameLength)
         }
     }
 }
