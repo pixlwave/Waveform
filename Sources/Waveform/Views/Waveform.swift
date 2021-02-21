@@ -11,16 +11,12 @@ struct Waveform: View {
     @State private var panGestureValue: CGFloat = 0
     
     @Binding var selectedSamples: SampleRange
-    @Binding var selectionBlendMode: BlendMode
     
     @Environment(\.colorScheme) var colorScheme
     
-    init(audio: WaveformAudio, selectedSamples: Binding<SampleRange>, selectionBlendMode: Binding<BlendMode>? = nil) {
+    init(audio: WaveformAudio, selectedSamples: Binding<SampleRange>) {
         self.audio = audio
         self._selectedSamples = selectedSamples
-        
-        self._selectionBlendMode = .constant(.normal)   // needs initialising before the next line?
-        self._selectionBlendMode = selectionBlendMode ?? (colorScheme == .light ? .constant(.screen) : .constant(.multiply))
     }
     
     var body: some View {
@@ -31,7 +27,6 @@ struct Waveform: View {
                 Highlight(selectedSamples: selectedSamples)
                     .foregroundColor(.accentColor)
                     .opacity(0.7)
-                    .blendMode(selectionBlendMode)
             }
             .padding(.bottom, 30)
             

@@ -13,16 +13,14 @@ struct ContentView: View {
     @State var waveformColor = Color.primary
     @State var backgroundColor = Color.clear
     @State var selectionColor = Color.accentColor
-    @State var blendMode = BlendMode.screen
 
     var body: some View {
         VStack {
-            Waveform(audio: audio, selectedSamples: $selectedSamples, selectionBlendMode: $blendMode)
+            Waveform(audio: audio, selectedSamples: $selectedSamples)
                 .layoutPriority(1)
                 .foregroundColor(waveformColor)
                 .background(backgroundColor)
                 .accentColor(selectionColor)
-                .cornerRadius(15)
             
             HStack {
                 Text("Debug:")
@@ -44,40 +42,9 @@ struct ContentView: View {
                         ColorPicker("Background Colour:", selection: $backgroundColor)
                         Spacer()
                         ColorPicker("Selection Colour:", selection: $selectionColor)
-                        Spacer()
-                        Picker("Blend Mode:", selection: $blendMode) {
-                            Group {
-                                Text("normal").tag(BlendMode.normal)
-                                Text("multiply").tag(BlendMode.multiply)
-                                Text("screen").tag(BlendMode.screen)
-                                Text("overlay").tag(BlendMode.overlay)
-                                Text("darken").tag(BlendMode.darken)
-                                Text("lighten").tag(BlendMode.lighten)
-                                Text("colorDodge").tag(BlendMode.colorDodge)
-                            }
-                            Group {
-                                Text("colorBurn").tag(BlendMode.colorBurn)
-                                Text("softLight").tag(BlendMode.softLight)
-                                Text("hardLight").tag(BlendMode.hardLight)
-                                Text("difference").tag(BlendMode.difference)
-                                Text("exclusion").tag(BlendMode.exclusion)
-                                Text("hue").tag(BlendMode.hue)
-                                Text("saturation").tag(BlendMode.saturation)
-                            }
-                            Group {
-                                Text("color").tag(BlendMode.color)
-                                Text("luminosity").tag(BlendMode.luminosity)
-                                Text("sourceAtop").tag(BlendMode.sourceAtop)
-                                Text("destinationOver").tag(BlendMode.destinationOver)
-                                Text("destinationOut").tag(BlendMode.destinationOut)
-                                Text("plusDarker").tag(BlendMode.plusDarker)
-                                Text("plusLighter").tag(BlendMode.plusLighter)
-                            }
-                        }
-                        .pickerStyle(MenuPickerStyle())
                     }
                 }
-                .transition(.offset(x: 0, y: 100))
+                .transition(.offset(x: 0, y: 150))
             }
         }
         .padding()
